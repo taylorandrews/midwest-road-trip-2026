@@ -1,0 +1,203 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Disc Golf Courses — Midwest Road Trip 2026</title>
+
+  <link rel="stylesheet"
+        href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
+  <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+
+  <style>
+    :root {
+      --trip: #ff5e3a;     /* on the route states */
+      --other: #28e0c8;    /* everywhere else */
+      --ink: #0b0e16;
+    }
+    html, body { margin: 0; height: 100%; background: var(--ink);
+                 font: 14px/1.4 -apple-system, system-ui, sans-serif; }
+    #map { height: 100%; width: 100%; background: #e8eaed; }
+    /* light, readable basemap (slight desaturation so markers pop) */
+    .leaflet-tile { filter: saturate(0.85); }
+
+    /* Basket marker (SVG in a divIcon) */
+    .basket { transition: transform .12s ease; }
+    .basket:hover { transform: scale(1.35); z-index: 1000; }
+    .basket svg { display: block; filter: drop-shadow(0 1px 2px rgba(0,0,0,.6)); }
+
+    /* Panels */
+    .panel {
+      position: absolute; z-index: 1000; color: #f3f5fb;
+      background: rgba(11,14,22,.78); backdrop-filter: blur(6px);
+      border: 1px solid rgba(255,255,255,.08); border-radius: 12px;
+      padding: 12px 14px;
+    }
+    #title { top: 16px; left: 16px; max-width: 300px; }
+    #title h1 { margin: 0 0 2px; font-size: 15px; }
+    #title .sub { color: #9aa3b8; font-size: 12px; }
+    #title .count { margin-top: 6px; font-size: 12px; }
+    #title .count b { color: var(--trip); }
+
+    #filters { top: 16px; right: 16px; display: flex; flex-direction: column;
+               gap: 6px; }
+    #filters .f {
+      cursor: pointer; padding: 5px 10px; border-radius: 8px; font-size: 12px;
+      border: 1px solid rgba(255,255,255,.14); background: transparent;
+      color: #cfd5e6; text-align: left;
+    }
+    #filters .f.active { background: rgba(255,94,58,.18);
+                         border-color: var(--trip); color: #fff; }
+
+    .legend { bottom: 16px; left: 16px; font-size: 12px; }
+    .legend .row { display: flex; align-items: center; gap: 7px; margin: 3px 0; }
+    .legend .dot { width: 11px; height: 11px; border-radius: 50%; }
+
+    /* Hover tooltip */
+    .leaflet-tooltip.course {
+      background: #11151f; color: #f3f5fb; border: 1px solid rgba(255,255,255,.14);
+      border-radius: 10px; padding: 10px 14px; font-size: 12.5px; line-height: 1.5;
+      box-shadow: 0 6px 18px rgba(0,0,0,.45);
+      min-width: 230px; max-width: 360px; width: max-content; white-space: normal;
+    }
+    .leaflet-tooltip.course:before { display: none; }
+    .course .name { font-weight: 700; font-size: 13.5px; }
+    .course .loc { color: #9aa3b8; }
+    .course .ranks { margin-top: 4px; }
+    .course .pill { display: inline-block; margin: 2px 4px 0 0; padding: 1px 7px;
+      border-radius: 20px; font-size: 11px; background: rgba(255,255,255,.08); }
+    .course .pill.world { background: rgba(40,224,200,.18); }
+    .course .pill.us { background: rgba(120,160,255,.18); }
+    .course .pill.state { background: rgba(255,94,58,.20); }
+  </style>
+</head>
+<body>
+  <div id="map"></div>
+
+  <div id="title" class="panel">
+    <h1>Disc Golf Courses 🥏</h1>
+    <div class="sub">Midwest Road Trip 2026 · UDisc 2026 rankings</div>
+    <div class="count" id="count">Loading courses…</div>
+  </div>
+
+  <div id="filters" class="panel">
+    <button class="f active" data-filter="all">All courses</button>
+    <button class="f" data-filter="trip">On route states</button>
+    <button class="f" data-filter="world">World Top 100</button>
+    <button class="f" data-filter="us">US Top 100</button>
+  </div>
+
+  <div class="legend panel">
+    <div class="row"><span class="dot" style="background:var(--trip)"></span>
+      Route state (CO/KS/MO/IL/IN/MI/IA/NE)</div>
+    <div class="row"><span class="dot" style="background:var(--other)"></span>
+      Elsewhere</div>
+    <div class="row" style="color:#9aa3b8;margin-top:5px">
+      Hover a basket for course info</div>
+  </div>
+
+  <script>
+    const map = L.map("map", { worldCopyJump: true });
+    L.tileLayer(
+      "https://{s}.basemaps.cartocdn.com/light_all/{z}/{x}/{y}{r}.png",
+      { attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> &copy; <a href="https://carto.com/attributions">CARTO</a>',
+        maxZoom: 19 }
+    ).addTo(map);
+
+    // Disc golf basket icon (SVG), tinted per group
+    function basketIcon(color, scale = 1) {
+      const s = 26 * scale;
+      const svg = `
+        <svg width="${s}" height="${s}" viewBox="0 0 24 24" fill="none"
+             stroke="${color}" stroke-width="1.6" stroke-linecap="round">
+          <ellipse cx="12" cy="6" rx="6" ry="2.2" fill="${color}" fill-opacity="0.25"/>
+          <path d="M6 6 Q12 11 18 6"/>
+          <line x1="6" y1="6" x2="8.5" y2="13"/>
+          <line x1="18" y1="6" x2="15.5" y2="13"/>
+          <line x1="12" y1="4" x2="12" y2="13"/>
+          <rect x="8.5" y="12.5" width="7" height="2.2" rx="0.6" fill="${color}" stroke="none"/>
+          <line x1="12" y1="14.7" x2="12" y2="22"/>
+          <line x1="9" y1="22" x2="15" y2="22"/>
+        </svg>`;
+      return L.divIcon({ className: "basket", html: svg,
+        iconSize: [s, s], iconAnchor: [s / 2, s] });
+    }
+
+    function rankPills(c) {
+      let p = "";
+      if (c.world_rank !== "") p += `<span class="pill world">🌎 World #${c.world_rank}</span>`;
+      if (c.us_rank !== "")    p += `<span class="pill us">🇺🇸 US #${c.us_rank}</span>`;
+      if (c.state_rank !== "") p += `<span class="pill state">📍 ${c.state_region} #${c.state_rank}</span>`;
+      return p || `<span class="pill">unranked here</span>`;
+    }
+
+    function tooltipHtml(c) {
+      const loc = [c.city, c.state_region, c.country].filter(Boolean).join(", ");
+      return `<div class="name">${c.course_name}</div>
+              <div class="loc">${loc}</div>
+              <div class="ranks">${rankPills(c)}</div>`;
+    }
+
+    const groups = { all: [], trip: [], world: [], us: [] };
+
+    fetch("../data/course-rankings/courses_2026.json")
+      .then((r) => r.json())
+      .then((courses) => {
+        const placed = courses.filter((c) => c.lat !== "" && c.lon !== "");
+        placed.forEach((c) => {
+          const color = c.on_trip_route ? getCss("--trip") : getCss("--other");
+          // bigger marker for higher-ranked courses
+          const best = Math.min(...[c.world_rank, c.us_rank, c.state_rank]
+            .filter((v) => v !== "").map(Number), 9999);
+          const scale = best <= 10 ? 1.35 : best <= 50 ? 1.15 : 1;
+          const m = L.marker([c.lat, c.lon], { icon: basketIcon(color, scale) })
+            .bindTooltip(tooltipHtml(c), { className: "course",
+              direction: "top", offset: [0, -22], sticky: false });
+          m._course = c;
+          groups.all.push(m);
+          if (c.on_trip_route) groups.trip.push(m);
+          if (c.world_rank !== "") groups.world.push(m);
+          if (c.us_rank !== "") groups.us.push(m);
+        });
+
+        let active = L.layerGroup(groups.all).addTo(map);
+        fit(groups.all);
+        updateCount("all", placed.length, courses.length);
+
+        document.querySelectorAll("#filters .f").forEach((btn) => {
+          btn.onclick = () => {
+            document.querySelectorAll("#filters .f")
+              .forEach((b) => b.classList.remove("active"));
+            btn.classList.add("active");
+            const key = btn.dataset.filter;
+            map.removeLayer(active);
+            active = L.layerGroup(groups[key]).addTo(map);
+            fit(groups[key]);
+            updateCount(key, groups[key].length, courses.length);
+          };
+        });
+      })
+      .catch((e) => {
+        document.getElementById("count").textContent =
+          "Could not load course data — run geocode_courses.py, then serve from the sabbatical folder.";
+        console.error(e);
+      });
+
+    function fit(markers) {
+      if (!markers.length) return;
+      map.fitBounds(L.featureGroup(markers).getBounds().pad(0.15));
+    }
+    function updateCount(key, shown, total) {
+      const labels = { all: "all courses", trip: "on route states",
+                       world: "World Top 100", us: "US Top 100" };
+      document.getElementById("count").innerHTML =
+        `<b>${shown}</b> shown · ${labels[key]}<br>` +
+        `<span style="color:#9aa3b8">of ${total} in the dataset</span>`;
+    }
+    function getCss(n) {
+      return getComputedStyle(document.documentElement)
+        .getPropertyValue(n).trim();
+    }
+  </script>
+</body>
+</html>
