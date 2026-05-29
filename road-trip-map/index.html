@@ -1,0 +1,136 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Disc Golf Road Trip — Sabbatical 2026</title>
+
+  <link rel="stylesheet"
+        href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
+  <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+
+  <style>
+    :root {
+      --route: #ff5e3a;        /* warm road-trip orange */
+      --route-glow: #ffb199;
+      --stop: #28e0c8;
+      --ink: #0b0e16;
+    }
+    html, body { margin: 0; height: 100%; background: var(--ink); }
+    #map { height: 100%; width: 100%; background: var(--ink); }
+
+    /* Dim the basemap so the route pops -- good base for an art export */
+    .leaflet-tile { filter: grayscale(1) brightness(0.55) contrast(1.05); }
+
+    .overlay {
+      position: absolute; z-index: 1000; top: 18px; left: 18px;
+      color: #f3f5fb; font: 14px/1.4 -apple-system, system-ui, sans-serif;
+      background: rgba(11, 14, 22, 0.72); backdrop-filter: blur(6px);
+      padding: 14px 18px; border-radius: 12px; max-width: 280px;
+      border: 1px solid rgba(255, 255, 255, 0.08);
+    }
+    .overlay h1 { margin: 0 0 4px; font-size: 16px; letter-spacing: 0.2px; }
+    .overlay .sub { color: #9aa3b8; font-size: 12px; margin-bottom: 10px; }
+    .overlay .stat { font-variant-numeric: tabular-nums; }
+    .overlay .stat b { color: var(--route); }
+
+    .stop-label {
+      background: rgba(11, 14, 22, 0.85); color: #f3f5fb;
+      border: 1px solid rgba(255,255,255,0.12); border-radius: 6px;
+      padding: 2px 7px; font: 12px/1 system-ui, sans-serif; white-space: nowrap;
+    }
+    .leaflet-popup-content-wrapper {
+      background: #11151f; color: #f3f5fb; border-radius: 10px;
+    }
+    .leaflet-popup-tip { background: #11151f; }
+  </style>
+</head>
+<body>
+  <div id="map"></div>
+  <div class="overlay">
+    <h1>Disc Golf Road Trip</h1>
+    <div class="sub">Sabbatical 2026 · Buena Vista, CO → Kansas City, MO</div>
+    <div class="stat" id="stats">Loading route…</div>
+  </div>
+
+  <script>
+    const map = L.map("map", { zoomControl: true, attributionControl: true });
+
+    // Carto dark tiles -- no API key required
+    L.tileLayer(
+      "https://{s}.basemaps.cartocdn.com/dark_all/{z}/{x}/{y}{r}.png",
+      {
+        attribution:
+          '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> &copy; ' +
+          '<a href="https://carto.com/attributions">CARTO</a>',
+        maxZoom: 19,
+      }
+    ).addTo(map);
+
+    fetch("route.geojson")
+      .then((r) => r.json())
+      .then((geo) => {
+        const routeFeature = geo.features.find(
+          (f) => f.properties.kind === "route"
+        );
+        const stops = geo.features.filter(
+          (f) => f.properties.kind === "stop"
+        );
+
+        // GeoJSON is [lon, lat]; Leaflet wants [lat, lon]
+        const latlngs = routeFeature.geometry.coordinates.map(
+          ([lon, lat]) => [lat, lon]
+        );
+
+        // Glow underlay + crisp route line on top
+        L.polyline(latlngs, {
+          color: getCss("--route-glow"), weight: 9, opacity: 0.25,
+          lineJoin: "round",
+        }).addTo(map);
+        const line = L.polyline(latlngs, {
+          color: getCss("--route"), weight: 3.5, opacity: 0.95,
+          lineJoin: "round",
+        }).addTo(map);
+
+        // Stop markers
+        stops.forEach((s) => {
+          const [lon, lat] = s.geometry.coordinates;
+          const p = s.properties;
+          const isEndpoint = p.type === "start" || p.type === "end";
+          L.circleMarker([lat, lon], {
+            radius: isEndpoint ? 7 : 5,
+            color: "#fff", weight: 2,
+            fillColor: getCss("--stop"), fillOpacity: 1,
+          })
+            .addTo(map)
+            .bindPopup(
+              `<b>${p.name}</b><br><span style="color:#9aa3b8">${p.type}` +
+              (p.day ? ` · day ${p.day}` : "") + `</span>` +
+              (p.notes ? `<br>${p.notes}` : "")
+            )
+            .bindTooltip(p.name, {
+              permanent: true, direction: "right", className: "stop-label",
+              offset: [8, 0],
+            });
+        });
+
+        map.fitBounds(line.getBounds(), { padding: [60, 60] });
+
+        const pr = routeFeature.properties;
+        document.getElementById("stats").innerHTML =
+          `<b>${pr.distance_mi}</b> mi · <b>${pr.duration_hr}</b> hr drive` +
+          `<br>${stops.length} stops`;
+      })
+      .catch((e) => {
+        document.getElementById("stats").textContent =
+          "Could not load route.geojson — run build_route.py first.";
+        console.error(e);
+      });
+
+    function getCss(name) {
+      return getComputedStyle(document.documentElement)
+        .getPropertyValue(name).trim();
+    }
+  </script>
+</body>
+</html>

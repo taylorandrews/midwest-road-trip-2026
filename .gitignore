@@ -1,0 +1,47 @@
+# --- Python ---
+__pycache__/
+*.py[cod]
+*.egg-info/
+.eggs/
+.venv/
+venv/
+env/
+.ipynb_checkpoints/
+.pytest_cache/
+.mypy_cache/
+.ruff_cache/
+
+# --- Secrets / credentials (never commit) ---
+.env
+.env.*
+*.pem
+*.key
+secrets.*
+credentials.*
+
+# --- macOS / OS cruft ---
+.DS_Store
+.AppleDouble
+.LSOverride
+Thumbs.db
+Desktop.ini
+
+# --- Editors ---
+.vscode/
+.idea/
+*.swp
+*.swo
+*~
+
+# --- Logs / temp ---
+*.log
+*.tmp
+tmp/
+
+# --- Generated / large art exports ---
+# Track the assets/ folder structure but not heavy rendered output.
+assets/exports/*
+!assets/exports/.gitkeep
+*.mp4
+*.mov
+*.zip

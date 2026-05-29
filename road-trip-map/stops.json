@@ -1,0 +1,22 @@
+{
+  "trip_name": "Disc Golf Road Trip Sabbatical 2026",
+  "description": "Buena Vista, CO to Kansas City, MO. Add disc golf courses / overnight stops to `stops` in travel order and re-run build_route.py to reroute through them.",
+  "stops": [
+    {
+      "name": "Buena Vista, CO",
+      "lat": 38.8422,
+      "lon": -106.1311,
+      "type": "start",
+      "day": null,
+      "notes": "Trip origin"
+    },
+    {
+      "name": "Kansas City, MO",
+      "lat": 39.0997,
+      "lon": -94.5786,
+      "type": "end",
+      "day": null,
+      "notes": "Trip destination"
+    }
+  ]
+}
