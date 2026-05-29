@@ -24,19 +24,19 @@ KC (start)  →  fly to Denver  →  Buena Vista (truck prep)
 
 | Date | Plan |
 |------|------|
-| **Sat 8/8** | Wake in KC · fly to Denver · drive to Buena Vista · prep the truck · sleep in BV |
-| **Sun 8/9** | Wake in BV · hit the road · disc somewhere in CO · sleep in CO |
-| **Mon 8/10** | Wake in camper · disc, drive east · sleep on road |
-| **Tue 8/11** | Disc, drive east · sleep on road |
-| **Wed 8/12** | Disc · drive into KC · sleep in KC |
+| **Sat 8/8** | Wake in KC · fly to Denver · drive to Buena Vista (120 mi) · prep the truck · sleep in BV |
+| **Sun 8/9** | Wake in BV · drive NE, play **Buck Snort** (Pine, CO · CO #2) · 93 mi · sleep in CO |
+| **Mon 8/10** | Drive to **Sterling**, play **Optimist & Pessimist** (always wanted to) · 176 mi · sleep on road |
+| **Tue 8/11** | ⚠ Long haul east across KS, play **Jones Park: East** (Emporia · KS #9) · **500 mi / 9.8 hr** · sleep on road |
+| **Wed 8/12** | Play **Clauder's Bogey Barn** (Paola · KS #1 / US #47) · drive into KC · 127 mi · sleep in KC |
 | **Thu 8/13** | KC |
 | **Fri 8/14** | Woodside · house project? |
 | **Sat 8/15** | KC |
 | **Sun 8/16** | KC |
 
-> CO disc stops (8/9–8/11) are still open. Candidate top-10 CO courses in
-> `../data/course-rankings/` along the eastbound path: Beaver Ranch (Conifer),
-> BuckSnort (Pine), Bear Mountain (Bailey), Wondervu (Golden).
+> ⚠ **Aug 11 is a 500 mi / ~10 hr day** — Emporia is far into eastern Kansas.
+> If that's too much, swap Jones Park: East for a course nearer the Sterling→KC
+> line, or split it over two days.
 
 ---
 

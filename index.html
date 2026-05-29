@@ -1,0 +1,203 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Sabbatical 2026 — Disc Golf Road Trip</title>
+  <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
+  <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+  <style>
+    :root {
+      --bg: #11151f; --card: #1b2130; --ink: #eef1f7; --muted: #98a1b5;
+      --line: #2c3344; --route: #ff5e3a; --route-hot: #ff8a5c;
+    }
+    * { box-sizing: border-box; }
+    html, body { margin: 0; height: 100%; }
+    body {
+      background: var(--bg); color: var(--ink); height: 100vh; display: flex;
+      flex-direction: column; overflow: hidden;
+      font: 14px/1.4 -apple-system, BlinkMacSystemFont, system-ui, sans-serif;
+    }
+
+    header { flex: none; padding: 10px 18px; border-bottom: 1px solid var(--line);
+      display: flex; align-items: baseline; gap: 12px; flex-wrap: wrap; }
+    header h1 { margin: 0; font-size: 16px; }
+    header .dates { color: var(--muted); font-size: 12.5px; }
+    header .hint { color: var(--muted); font-size: 12px; }
+    header .hint b { color: var(--route-hot); }
+    header .planlink { margin-left: auto; font-size: 13px; }
+    header .planlink a { color: var(--route-hot); text-decoration: none;
+      border: 1px solid var(--line); border-radius: 8px; padding: 5px 11px; }
+    header .planlink a:hover { border-color: var(--route-hot); }
+
+    /* ---- Calendar (top) ---- */
+    #cal { flex: none; padding: 12px 18px 14px; border-bottom: 1px solid var(--line);
+      overflow-y: auto; max-height: 46vh; }
+    .legend { display: flex; flex-wrap: wrap; gap: 8px 14px; margin-bottom: 10px; }
+    .legend .row { display: flex; align-items: center; gap: 6px; font-size: 11.5px;
+      color: var(--muted); }
+    .legend .dot { width: 11px; height: 11px; border-radius: 3px; }
+    .weekhdr, .grid { display: grid; grid-template-columns: repeat(7, 1fr); gap: 5px; }
+    .weekhdr div { text-align: center; font-size: 10.5px; color: var(--muted);
+      text-transform: uppercase; letter-spacing: .6px; padding-bottom: 3px; }
+    .cell { background: var(--card); border: 1px solid var(--line); border-radius: 7px;
+      min-height: 62px; padding: 5px 7px; position: relative; }
+    .cell.blank { background: transparent; border-color: transparent; }
+    .cell .num { font-size: 11px; color: var(--muted); font-weight: 700; }
+    .cell.trip { border-left: 4px solid var(--line); cursor: pointer; transition: background .1s, transform .1s; }
+    .cell.trip:hover, .cell.trip.active { background: #232b3d; }
+    .cell.trip.active { transform: translateY(-1px); }
+    .cell .ttl { font-size: 11.5px; font-weight: 600; margin-top: 2px; line-height: 1.2;
+      overflow: hidden; display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; }
+    .cell .drive { font-size: 10.5px; color: var(--muted); margin-top: 3px; }
+    .cell.driving .drive { color: var(--route-hot); }
+    .cell .play { position: absolute; top: 4px; right: 5px; font-size: 11px; }
+
+    /* ---- Map (bottom) ---- */
+    #map { flex: 1; min-height: 0; background: var(--bg); }
+    .leaflet-tile { filter: brightness(1.22) saturate(1.05); }
+    .basket svg { display: block; filter: drop-shadow(0 1px 2px rgba(0,0,0,.7)); }
+    .place-label { background: transparent; border: 0; box-shadow: none; color: #c8d0e0;
+      font-size: 11px; font-weight: 600; text-shadow: 0 1px 3px #000, 0 0 3px #000; }
+    .leaflet-tooltip.course { background: #1b2130; color: var(--ink);
+      border: 1px solid var(--line); border-radius: 9px; padding: 7px 10px;
+      font-size: 12.5px; box-shadow: 0 6px 18px rgba(0,0,0,.5); }
+    .leaflet-tooltip.course:before { display: none; }
+    .course .nm { font-weight: 700; } .course .nt { color: var(--muted); }
+
+    @media (max-width: 760px) {
+      body { overflow: auto; height: auto; }
+      #cal { max-height: none; }
+      .cell { min-height: 54px; }
+      #map { height: 70vh; }
+    }
+  </style>
+</head>
+<body>
+  <header>
+    <h1>Sabbatical 2026 🥏</h1>
+    <span class="dates">Disc Golf Road Trip · Aug 8 – Sep 7</span>
+    <span class="hint">Hover a day to <b>light up</b> that day's drive · click to zoom</span>
+    <span class="planlink"><a href="plan/">📋 Plan &amp; checklist →</a></span>
+  </header>
+
+  <section id="cal">
+    <div class="legend" id="legend"></div>
+    <div class="weekhdr" id="weekhdr"></div>
+    <div class="grid" id="grid"></div>
+  </section>
+
+  <div id="map"></div>
+
+  <script>
+    const WD_MON = ["Mon","Tue","Wed","Thu","Fri","Sat","Sun"]; // Monday-first
+    const MON = ["Jan","Feb","Mar","Apr","May","Jun","Jul","Aug","Sep","Oct","Nov","Dec"];
+    const pd = (s) => { const [y,m,d]=s.split("-").map(Number); return new Date(y,m-1,d); };
+    const key = (dt) => `${dt.getFullYear()}-${String(dt.getMonth()+1).padStart(2,"0")}-${String(dt.getDate()).padStart(2,"0")}`;
+    const monIdx = (dt) => (dt.getDay()+6)%7; // Mon=0 .. Sun=6
+    const css = (n) => getComputedStyle(document.documentElement).getPropertyValue(n).trim();
+
+    const map = L.map("map", { zoomControl: true });
+    L.tileLayer("https://{s}.basemaps.cartocdn.com/dark_all/{z}/{x}/{y}{r}.png",
+      { attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OSM</a> &copy; <a href="https://carto.com/attributions">CARTO</a>', maxZoom: 19 }
+    ).addTo(map);
+
+    function basketIcon(color) {
+      const s = 24;
+      return L.divIcon({ className: "basket", iconSize: [s,s], iconAnchor: [s/2,s],
+        html: `<svg width="${s}" height="${s}" viewBox="0 0 24 24" fill="none" stroke="${color}" stroke-width="1.6" stroke-linecap="round">
+          <ellipse cx="12" cy="6" rx="6" ry="2.2" fill="${color}" fill-opacity="0.25"/>
+          <path d="M6 6 Q12 11 18 6"/><line x1="6" y1="6" x2="8.5" y2="13"/><line x1="18" y1="6" x2="15.5" y2="13"/>
+          <line x1="12" y1="4" x2="12" y2="13"/><rect x="8.5" y="12.5" width="7" height="2.2" rx="0.6" fill="${color}" stroke="none"/>
+          <line x1="12" y1="14.7" x2="12" y2="22"/><line x1="9" y1="22" x2="15" y2="22"/></svg>` });
+    }
+
+    const driveByDate = {};   // date -> {layer, bounds}
+    const cellByDate = {};    // date -> calendar cell element
+
+    const DEF = { color: css("--route"), weight: 3, opacity: 0.4 };
+    const HOT = { color: css("--route-hot"), weight: 6, opacity: 1 };
+
+    function setHot(date, on) {
+      const d = driveByDate[date];
+      if (d) { d.layer.setStyle(on ? HOT : DEF); if (on) d.layer.bringToFront(); }
+      const c = cellByDate[date];
+      if (c) c.classList.toggle("active", on);
+    }
+
+    Promise.all([
+      fetch("trip-plan/schedule.json").then(r => r.json()),
+      fetch("trip-plan/route_segments.geojson").then(r => r.json()),
+    ]).then(([schedule, geo]) => {
+      const phases = schedule.phases;
+      const byDate = {}; schedule.days.forEach(d => byDate[d.date] = d);
+
+      // ---- map: drive lines + markers ----
+      const allBounds = [];
+      geo.features.filter(f => f.properties.kind === "drive").forEach(f => {
+        const latlngs = f.geometry.coordinates.map(([lo,la]) => [la,lo]);
+        const line = L.polyline(latlngs, DEF).addTo(map);
+        const date = f.properties.date;
+        line.on("mouseover", () => setHot(date, true));
+        line.on("mouseout", () => setHot(date, false));
+        line.bindTooltip(`<span class="nm">${f.properties.label}</span><br><span class="nt">${f.properties.miles} mi · ${f.properties.hours} hr</span>`, { className: "course", sticky: true });
+        driveByDate[date] = { layer: line, bounds: line.getBounds() };
+        allBounds.push(line.getBounds());
+      });
+      geo.features.filter(f => f.properties.kind !== "drive").forEach(f => {
+        const [lo,la] = f.geometry.coordinates; const p = f.properties;
+        if (p.play) {
+          L.marker([la,lo], { icon: basketIcon(css("--route")) }).addTo(map)
+            .bindTooltip(`<span class="nm">🥏 ${p.name}</span>` + (p.note?`<br><span class="nt">${p.note}</span>`:""), { className:"course", direction:"top", offset:[0,-20] });
+        } else {
+          L.circleMarker([la,lo], { radius: 4, color:"#fff", weight:1.5, fillColor:"#8a93a8", fillOpacity:1 }).addTo(map)
+            .bindTooltip(p.name, { permanent:true, direction:"right", className:"place-label", offset:[6,0] });
+        }
+      });
+      if (allBounds.length) map.fitBounds(allBounds.reduce((a,b)=>a.extend(b)), { padding:[40,40] });
+
+      // ---- legend ----
+      document.getElementById("legend").innerHTML = Object.values(phases)
+        .map(p => `<div class="row"><span class="dot" style="background:${p.color}"></span>${p.label}</div>`).join("");
+
+      // ---- calendar: Monday-start weeks, trip days only, no month break ----
+      document.getElementById("weekhdr").innerHTML = WD_MON.map(w=>`<div>${w}</div>`).join("");
+      const start = pd(schedule.start), end = pd(schedule.end);
+      const cur = new Date(start); cur.setDate(cur.getDate() - monIdx(start));    // back to Monday
+      const last = new Date(end); last.setDate(last.getDate() + (6 - monIdx(end))); // fwd to Sunday
+      let html = "";
+      for (let d = new Date(cur); d <= last; d.setDate(d.getDate()+1)) {
+        const k = key(d), e = byDate[k];
+        if (!e) { html += `<div class="cell blank"></div>`; continue; }
+        const ph = phases[e.phase];
+        const drv = driveByDate[k];
+        html += `<div class="cell trip${drv?" driving":""}" data-date="${k}" style="border-left-color:${ph.color}">
+          <span class="num">${MON[d.getMonth()]} ${d.getDate()}</span>
+          ${e.course ? `<span class="play">🥏</span>` : ""}
+          <div class="ttl">${e.title}</div>
+          ${drv ? `<div class="drive">🚗</div>` : ""}
+        </div>`;
+      }
+      document.getElementById("grid").innerHTML = html;
+
+      // attach drive miles text + wire hover/click
+      geo.features.filter(f=>f.properties.kind==="drive").forEach(f=>{
+        const c = document.querySelector(`.cell[data-date="${f.properties.date}"] .drive`);
+        if (c) c.textContent = `🚗 ${f.properties.miles} mi · ${f.properties.hours} hr`;
+      });
+      document.querySelectorAll(".cell.trip").forEach(cell => {
+        const date = cell.dataset.date; cellByDate[date] = cell;
+        cell.addEventListener("mouseenter", () => setHot(date, true));
+        cell.addEventListener("mouseleave", () => setHot(date, false));
+        cell.addEventListener("click", () => {
+          const d = driveByDate[date];
+          if (d) map.fitBounds(d.bounds, { padding:[60,60] });
+        });
+      });
+    }).catch(e => {
+      document.getElementById("grid").innerHTML = "<p style='color:#98a1b5'>Couldn't load trip data — serve from the sabbatical folder (python3 -m http.server).</p>";
+      console.error(e);
+    });
+  </script>
+</body>
+</html>
