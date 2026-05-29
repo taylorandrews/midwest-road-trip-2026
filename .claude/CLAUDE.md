@@ -22,11 +22,18 @@ The coding side has two threads:
 ## Folder layout
 
 ```
-road-trip-map/   # Leaflet map of the active driving route (KC→Detroit leg)
+index.html       # THE SITE — single interactive page: calendar on top, Leaflet map
+                 #   below. Calendar = Monday-start weeks, trip days only, no month
+                 #   break. HOVER a day -> that day's drive lights up on the map;
+                 #   click -> zoom to it. Driven by trip-plan/schedule.json +
+                 #   trip-plan/route_segments.geojson. Serve from root, open :8000.
+road-trip-map/   # Standalone Leaflet map of the KC→Detroit leg (single route line).
+                 #   Superseded by the root index.html for the main experience.
 course-map/      # Leaflet map of all courses (basket pins, no route) for research
 data/            # structured datasets for mapping
   course-rankings/   # UDisc 2026 rankings, deduped (world/US/route-state), geocoded
-trip-plan/       # itinerary.md — canonical schedule (transferred from Apple Notes)
+trip-plan/       # schedule.json (calendar) + segments.json/build_segments.py ->
+                 #   route_segments.geojson (per-day drive lines) + itinerary.md
 assets/          # working materials for the visual (exports/palettes/reference)
 .claude/         # this file
 README.md        # top-level overview tying it together
@@ -75,11 +82,20 @@ Structured UDisc **2026** course-ranking dataset, built for mapping.
 - **Overall trip = loop** (CO→KS→MO→IL→IN→MI→IA→NE→CO), Aug 8 – Sep 7. Full
   schedule lives in `trip-plan/itinerary.md` (transferred from Apple Notes; that
   note can be archived). Worlds (spectating) is Aug 26–30 near Detroit.
-- **Active mapped route = KC→Detroit disc golf leg** (Aug 17–25). Per-state
-  ranking lists were pulled for the 8 route states only (intentional scope).
-- Course stops chosen for the leg: Harmony Bends, Eagles Crossing (play both
-  courses), BC3, Idlewild, a 2-night Lake Michigan camp (Rogers Lakewood /
-  Lemon Lake, near Indiana Dunes), Arvesta, Flip City, Kensington Toboggan.
+- **Map now covers the whole trip as per-day drive segments** (16 driving days,
+  ~3,669 mi), defined in `trip-plan/segments.json`. Hover a calendar day to light
+  up that day's line.
+- **Outbound CO→KC (Aug 8–12) planned:** Denver→BV (8/8); Buck Snort, Pine CO
+  (8/9); Sterling Optimist & Pessimist — not on UDisc lists, personal want (8/10);
+  Jones Park: East, Emporia (8/11, a 500 mi / ~10 hr day — flagged); Clauder's →
+  KC (8/12).
+- **Fixed Buck Snort's coordinates** in the dataset: Nominatim's "Pine, Colorado"
+  resolves to the wrong Pine (SW CO near Durango); corrected to the Buffalo
+  Creek/Pine area SW of Denver (~39.39, -105.27).
+- KC→Detroit leg stops (Aug 17–25): Harmony Bends, Eagles Crossing (play both),
+  BC3, Idlewild, 2-night Lake Michigan camp (Rogers Lakewood / Lemon Lake near
+  Indiana Dunes), Arvesta, Flip City, Kensington Toboggan.
+- Return (Aug 31–Sep 4) mapped at city level: Detroit→Iowa City→Kearney NE→BV.
 - Map kept **static** for now (no draw-on-load animation) until the art
   direction is clearer.
 - Course dataset **geocoded** (185/186 located; only "Lille Leland", Norway

@@ -16,11 +16,11 @@
       --stop: #28e0c8;
       --ink: #0b0e16;
     }
-    html, body { margin: 0; height: 100%; background: var(--ink); }
-    #map { height: 100%; width: 100%; background: var(--ink); }
+    html, body { margin: 0; height: 100%; background: #232734; }
+    #map { height: 100%; width: 100%; background: #232734; }
 
-    /* Dim the basemap so the route pops -- good base for an art export */
-    .leaflet-tile { filter: grayscale(1) brightness(0.55) contrast(1.05); }
+    /* Medium-dark basemap: legible, not black. Gentle lift on Carto dark tiles. */
+    .leaflet-tile { filter: brightness(1.22) saturate(1.05); }
 
     .overlay {
       position: absolute; z-index: 1000; top: 18px; left: 18px;

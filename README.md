@@ -11,11 +11,24 @@ Colorado → Kansas → Missouri → Illinois → Indiana → Detroit, MI
 Two threads: **trip logistics** (mapping the route + stops) and a **digital-art
 visual** built from the route and disc golf course data.
 
+## The website
+
+`index.html` (repo root) is the site: a **Calendar** tab (landing) showing the
+full trip — a month grid on desktop that reflows to scrolling day-cards on
+mobile — and a **Map** tab with the driving route. Serve from this folder:
+
+```bash
+python3 -m http.server 8000   # then open http://localhost:8000/
+```
+
 ## Layout
 
 ```
 sabbatical/
-├── road-trip-map/        # Interactive Leaflet map of the driving route (the app)
+├── index.html            # The site — Calendar (landing) + Map tabs
+├── road-trip-map/        # Leaflet map of the driving route (embedded in Map tab)
+├── course-map/           # Leaflet map of all courses (basket pins) for research
+├── trip-plan/            # itinerary.md + schedule.json (drives the calendar)
 ├── data/                 # Structured datasets for mapping
 │   └── course-rankings/  # UDisc 2026 best-course rankings (world/US/route states)
 ├── assets/               # Working materials for the art visual (exports, palettes, refs)
