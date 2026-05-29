@@ -22,9 +22,11 @@ The coding side has two threads:
 ## Folder layout
 
 ```
-road-trip-map/   # interactive Leaflet map of the driving route (the app)
+road-trip-map/   # Leaflet map of the active driving route (KC→Detroit leg)
+course-map/      # Leaflet map of all courses (basket pins, no route) for research
 data/            # structured datasets for mapping
-  course-rankings/   # UDisc 2026 rankings, deduped (world/US/route-state)
+  course-rankings/   # UDisc 2026 rankings, deduped (world/US/route-state), geocoded
+trip-plan/       # itinerary.md — canonical schedule (transferred from Apple Notes)
 assets/          # working materials for the visual (exports/palettes/reference)
 .claude/         # this file
 README.md        # top-level overview tying it together
@@ -33,8 +35,10 @@ README.md        # top-level overview tying it together
 ## Subprojects
 
 ### `road-trip-map/`
-Interactive map of the driving route. Currently still the one-way Buena Vista →
-Kansas City first leg — **not yet updated to the full loop**.
+Interactive map of the active driving route. Now set to the **KC → Detroit disc
+golf leg** (Aug 17–25): 9 stops through chosen top courses, ~1,254 mi / ~25 hr,
+ending at Kensington Toboggan (Worlds venue). `stops.json` carries each course's
+ranks + camping notes. (Earlier draft was a one-way Buena Vista → Kansas City.)
 
 - **Stack:** Leaflet (no API key) + the public OSRM routing API for real
   driving geometry. Python **standard library only** — `build_route.py` needs
@@ -68,15 +72,23 @@ Structured UDisc **2026** course-ranking dataset, built for mapping.
 
 ## Status / decisions so far
 
-- **Route = full loop** (CO→KS→MO→IL→IN→MI→IA→NE→CO). Per-state ranking lists
-  were pulled for these 8 states only (intentional scope), Top 10 each, plus the
-  global World/US Top 100s.
-- `road-trip-map/stops.json` still only the two original endpoints — real disc
-  golf course stops not yet added. The course dataset is the candidate set.
+- **Overall trip = loop** (CO→KS→MO→IL→IN→MI→IA→NE→CO), Aug 8 – Sep 7. Full
+  schedule lives in `trip-plan/itinerary.md` (transferred from Apple Notes; that
+  note can be archived). Worlds (spectating) is Aug 26–30 near Detroit.
+- **Active mapped route = KC→Detroit disc golf leg** (Aug 17–25). Per-state
+  ranking lists were pulled for the 8 route states only (intentional scope).
+- Course stops chosen for the leg: Harmony Bends, Eagles Crossing (play both
+  courses), BC3, Idlewild, a 2-night Lake Michigan camp (Rogers Lakewood /
+  Lemon Lake, near Indiana Dunes), Arvesta, Flip City, Kensington Toboggan.
 - Map kept **static** for now (no draw-on-load animation) until the art
   direction is clearer.
-- Course dataset **not yet geocoded** (lat/lon blank) — run `geocode_courses.py`
-  when ready to map the courses.
+- Course dataset **geocoded** (185/186 located; only "Lille Leland", Norway
+  missed). lat/lon live in `courses_2026.json` + `.csv`.
+- **`course-map/`** added: Leaflet map of all geocoded courses, basket-icon
+  markers, hover tooltips with name/location/ranks, filter buttons (All / route
+  states / World 100 / US 100). No route lines — it's for trip research. Reads
+  `../data/course-rankings/courses_2026.json`, so **serve from the sabbatical
+  root**: `python3 -m http.server 8000` → <http://localhost:8000/course-map/>.
 
 ## Conventions
 

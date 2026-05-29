@@ -1,22 +1,78 @@
 {
-  "trip_name": "Disc Golf Road Trip Sabbatical 2026",
-  "description": "Buena Vista, CO to Kansas City, MO. Add disc golf courses / overnight stops to `stops` in travel order and re-run build_route.py to reroute through them.",
+  "trip_name": "KC → Detroit Disc Golf Leg (Sabbatical 2026)",
+  "description": "The ~7-day disc golf drive from Kansas City to the Detroit area for Worlds (spectating). Aug 17-25, 2026, in a camper. Stops are top courses in travel order; edit and re-run build_route.py to reroute.",
   "stops": [
-    {
-      "name": "Buena Vista, CO",
-      "lat": 38.8422,
-      "lon": -106.1311,
-      "type": "start",
-      "day": null,
-      "notes": "Trip origin"
-    },
     {
       "name": "Kansas City, MO",
       "lat": 39.0997,
       "lon": -94.5786,
+      "type": "start",
+      "day": "8/17",
+      "notes": "Leg origin — wake up in KC, drive east"
+    },
+    {
+      "name": "Harmony Bends",
+      "lat": 38.951883,
+      "lon": -92.333737,
+      "type": "course",
+      "day": "8/17",
+      "notes": "Columbia, MO · World #25 / US #12 / MO #2"
+    },
+    {
+      "name": "Championship Course at Eagles Crossing",
+      "lat": 38.978376,
+      "lon": -91.23793,
+      "type": "course",
+      "day": "8/18",
+      "notes": "New Truxton, MO · World #9 / US #4 / MO #1 · play both courses here (also Wild Times, MO #3)"
+    },
+    {
+      "name": "BC3 Disc Golf Course",
+      "lat": 39.207242,
+      "lon": -86.246947,
+      "type": "course",
+      "day": "8/19",
+      "notes": "Nashville, IN · World #92 / US #64 / IN #1 · long drive across IL/IN"
+    },
+    {
+      "name": "Idlewild",
+      "lat": 39.041879,
+      "lon": -84.733471,
+      "type": "course",
+      "day": "8/20",
+      "notes": "Burlington, KY (Cincinnati) · World #22 / US #11"
+    },
+    {
+      "name": "Lake Michigan camp — Valparaiso / Crown Point, IN",
+      "lat": 41.467255,
+      "lon": -87.060449,
+      "type": "overnight",
+      "day": "8/21-8/22",
+      "notes": "2 nights by Lake Michigan (camper). Play Rogers Lakewood Park (IN #4, on a lake) and/or Lemon Lake County Park (IN #8). Indiana Dunes NP nearby for camping/beach."
+    },
+    {
+      "name": "Arvesta Sport Complex",
+      "lat": 42.403087,
+      "lon": -86.273641,
+      "type": "course",
+      "day": "8/23",
+      "notes": "South Haven, MI · World #78 / US #52 / MI #4 · up the lakeshore"
+    },
+    {
+      "name": "Flip City Disc Golf Park",
+      "lat": 43.608619,
+      "lon": -86.363963,
+      "type": "course",
+      "day": "8/24",
+      "notes": "Shelby, MI · World #35 / US #20 / MI #1"
+    },
+    {
+      "name": "Kensington Toboggan",
+      "lat": 42.540607,
+      "lon": -83.644784,
       "type": "end",
-      "day": null,
-      "notes": "Trip destination"
+      "day": "8/25",
+      "notes": "Milford Twp, MI · World #63 / US #40 / MI #2 · Worlds venue area — spectate 8/26-8/30"
     }
   ]
 }
