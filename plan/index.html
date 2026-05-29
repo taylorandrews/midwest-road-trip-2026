@@ -1,0 +1,304 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Trip Plan & Checklist — Sabbatical 2026</title>
+  <style>
+    :root {
+      --bg: #11151f; --card: #1b2130; --card2: #232b3d; --ink: #eef1f7;
+      --muted: #98a1b5; --line: #2c3344; --accent: #ff5e3a; --ok: #28e0c8;
+    }
+    * { box-sizing: border-box; }
+    body { margin: 0; background: var(--bg); color: var(--ink);
+      font: 14.5px/1.5 -apple-system, BlinkMacSystemFont, system-ui, sans-serif; }
+    a { color: var(--ok); }
+
+    header { position: sticky; top: 0; z-index: 10; background: rgba(17,21,31,.94);
+      backdrop-filter: blur(8px); border-bottom: 1px solid var(--line);
+      padding: 12px 20px; display: flex; align-items: center; gap: 14px; flex-wrap: wrap; }
+    header h1 { margin: 0; font-size: 16px; }
+    header .nav { font-size: 13px; }
+    header .tools { margin-left: auto; display: flex; gap: 8px; align-items: center; flex-wrap: wrap; }
+    .btn { background: var(--card2); color: var(--ink); border: 1px solid var(--line);
+      border-radius: 8px; padding: 6px 11px; font: inherit; font-size: 12.5px; cursor: pointer; }
+    .btn:hover { border-color: var(--accent); }
+    .progress { font-size: 12.5px; color: var(--muted); }
+    .progress b { color: var(--ok); }
+
+    main { max-width: 860px; margin: 0 auto; padding: 18px 16px 80px; }
+    .intro { color: var(--muted); font-size: 13px; margin: 4px 4px 18px; }
+
+    details { background: var(--card); border: 1px solid var(--line);
+      border-left: 5px solid var(--line); border-radius: 12px; margin-bottom: 12px; }
+    details[open] { box-shadow: 0 4px 18px rgba(0,0,0,.25); }
+    summary { list-style: none; cursor: pointer; padding: 13px 16px; display: flex;
+      align-items: baseline; gap: 10px; flex-wrap: wrap; }
+    summary::-webkit-details-marker { display: none; }
+    summary .date { font-weight: 700; font-size: 15px; }
+    summary .ttl { color: var(--ink); }
+    summary .tag { font-size: 11px; color: #fff; padding: 1px 8px; border-radius: 20px; }
+    summary .drive { font-size: 12px; color: var(--accent); margin-left: auto; white-space: nowrap; }
+    .body { padding: 2px 16px 16px; border-top: 1px solid var(--line); }
+
+    .known { background: var(--card2); border-radius: 9px; padding: 10px 12px; margin: 12px 0; font-size: 13.5px; }
+    .known div { margin: 2px 0; }
+    .known .lbl { color: var(--muted); }
+    .ideas { font-size: 13px; color: var(--muted); margin: 10px 0; padding: 9px 11px;
+      border: 1px dashed var(--line); border-radius: 9px; }
+    .ideas b { color: var(--ink); }
+
+    h4 { margin: 16px 0 7px; font-size: 12.5px; text-transform: uppercase; letter-spacing: .6px; color: var(--muted); }
+    .field { display: flex; flex-direction: column; gap: 3px; margin-bottom: 9px; }
+    .field label { font-size: 12px; color: var(--muted); }
+    .row2 { display: grid; grid-template-columns: 1fr 1fr; gap: 9px; }
+    input[type=text], select, textarea {
+      background: #0e121b; color: var(--ink); border: 1px solid var(--line);
+      border-radius: 7px; padding: 7px 9px; font: inherit; font-size: 13.5px; width: 100%; }
+    textarea { min-height: 56px; resize: vertical; }
+    input::placeholder, textarea::placeholder { color: #5c6479; }
+
+    .checks { display: grid; gap: 6px; }
+    .checks.cols { grid-template-columns: repeat(auto-fit, minmax(150px, 1fr)); }
+    .chk { display: flex; align-items: center; gap: 8px; font-size: 13.5px;
+      background: #0e121b; border: 1px solid var(--line); border-radius: 7px; padding: 7px 9px; cursor: pointer; }
+    .chk input { width: 16px; height: 16px; accent-color: var(--ok); cursor: pointer; }
+    .chk.done { border-color: var(--ok); color: var(--ok); }
+    .inline { display: flex; gap: 9px; align-items: center; flex-wrap: wrap; }
+    .inline .grow { flex: 1; min-width: 140px; }
+
+    @media print {
+      header { position: static; } .tools, .nav, .btn { display: none !important; }
+      details { break-inside: avoid; box-shadow: none; }
+      body { background: #fff; color: #000; }
+    }
+  </style>
+</head>
+<body>
+  <header>
+    <h1>Trip Plan & Checklist 🥏</h1>
+    <span class="nav"><a href="../">← Calendar &amp; map</a></span>
+    <div class="tools">
+      <span class="progress" id="progress">—</span>
+      <button class="btn" id="expand">Expand all</button>
+      <button class="btn" id="collapse">Collapse all</button>
+      <button class="btn" id="export">Export</button>
+      <button class="btn" onclick="window.print()">Print</button>
+    </div>
+  </header>
+
+  <main>
+    <p class="intro">Everything we know is filled in; blanks are for you to research.
+      Your entries save automatically in this browser. 🏕️ lines are public-land
+      starting points to verify — lean public where you can, paid campgrounds where it's thin.</p>
+    <div id="days"></div>
+  </main>
+
+  <script>
+    const KEY = "sabbatical-plan-v1";
+    const store = JSON.parse(localStorage.getItem(KEY) || "{}");
+    const get = (d,f) => (store[d]||{})[f];
+    const set = (d,f,v) => { (store[d] = store[d]||{})[f]=v; localStorage.setItem(KEY, JSON.stringify(store)); };
+
+    const WD = ["Sun","Mon","Tue","Wed","Thu","Fri","Sat"];
+    const MON = ["Jan","Feb","Mar","Apr","May","Jun","Jul","Aug","Sep","Oct","Nov","Dec"];
+    const pd = s => { const [y,m,d]=s.split("-").map(Number); return new Date(y,m-1,d); };
+    const esc = s => (s||"").replace(/&/g,"&amp;").replace(/</g,"&lt;").replace(/>/g,"&gt;").replace(/"/g,"&quot;");
+
+    // Region-specific public-land starting points (verify availability/season).
+    const STAY_IDEAS = {
+      "2026-08-08": "Pike/San Isabel NF dispersed around Buena Vista; or paid in town.",
+      "2026-08-09": "Pike NF dispersed near Buffalo Creek / Pine (FS roads); Buffalo Creek Rec Area.",
+      "2026-08-10": "Pawnee National Grassland (dispersed) NE of Sterling; North Sterling State Park (paid, hookups).",
+      "2026-08-11": "E Kansas public land is thin — Corps of Engineers lakes (Council Grove, Melvern); or paid RV park near Emporia.",
+      "2026-08-12": "Home base — KC.",
+      "2026-08-17": "Finger Lakes State Park (Columbia); Mark Twain NF to the south; COE Mark Twain Lake to the NE.",
+      "2026-08-18": "Cuivre River State Park (Troy, MO); or paid near Warrenton.",
+      "2026-08-19": "Brown County State Park (paid, classic) or Hoosier NF / Charles Deam dispersed.",
+      "2026-08-20": "Big Bone Lick State Park is minutes away (Union, KY); or Cincinnati-area paid.",
+      "2026-08-21": "Indiana Dunes NP (Dunewood) / Indiana Dunes State Park — book well ahead for a 2-night base.",
+      "2026-08-22": "Same Lake Michigan base (Indiana Dunes).",
+      "2026-08-23": "Van Buren State Park (South Haven, on the lake); MI state forest campgrounds.",
+      "2026-08-24": "Silver Lake State Park (Mears) near Shelby; Manistee NF dispersed.",
+      "2026-08-25": "Near Milford: Proud Lake / Island Lake / Highland State Rec Areas — book early, Worlds week is busy.",
+      "2026-08-26": "Worlds base near Milford/Detroit — same as 8/25; reserve the whole stretch.",
+      "2026-08-27": "Worlds base (same).", "2026-08-28": "Worlds base (same).",
+      "2026-08-29": "Worlds base (same).", "2026-08-30": "Worlds base (same).",
+      "2026-08-31": "COE Coralville Lake campgrounds near Iowa City.",
+      "2026-09-01": "Iowa City — COE Coralville Lake, or city/county park.",
+      "2026-09-02": "Fort Kearny State Rec Area (Kearney); Nebraska SRAs along I-80.",
+      "2026-09-03": "Pike/San Isabel NF dispersed near BV.",
+      "2026-09-04": "KC.", "2026-09-05": "KC.", "2026-09-06": "KC.", "2026-09-07": "KC."
+    };
+
+    Promise.all([
+      fetch("../trip-plan/schedule.json").then(r=>r.json()),
+      fetch("../trip-plan/route_segments.geojson").then(r=>r.json()),
+    ]).then(([schedule, geo]) => {
+      const phases = schedule.phases;
+      const drive = {};
+      geo.features.filter(f=>f.properties.kind==="drive").forEach(f=>drive[f.properties.date]=f.properties);
+
+      const html = schedule.days.map(day => section(day, phases, drive[day.date])).join("");
+      document.getElementById("days").innerHTML = prepSection() + html;
+
+      populate();
+      wire();
+      updateProgress();
+    }).catch(e => {
+      document.getElementById("days").innerHTML = "<p style='color:#98a1b5'>Couldn't load trip data — serve from the sabbatical folder.</p>";
+      console.error(e);
+    });
+
+    function text(day, field, ph) {
+      return `<input type="text" data-day="${day}" data-field="${field}" placeholder="${ph||""}">`;
+    }
+    function check(day, field, label, cls) {
+      return `<label class="chk ${cls||""}"><input type="checkbox" class="track" data-day="${day}" data-field="${field}"> <span>${label}</span></label>`;
+    }
+
+    function section(day, phases, drv) {
+      const d = pd(day.date), ph = phases[day.phase];
+      const dk = day.date;
+      const items = (day.items||[]).map(i=>`<div>• ${esc(i)}</div>`).join("");
+      const playKnown = day.course ? `<div><span class="lbl">🥏 Play:</span> <b>${esc(day.course.name)}</b>${day.course.ranks?` · ${esc(day.course.ranks)}`:""}</div>` : "";
+      const driveKnown = drv ? `<div><span class="lbl">🚗 Drive:</span> ${esc(drv.label)} · ${drv.miles} mi / ${drv.hours} hr</div>` : "";
+      const idea = STAY_IDEAS[dk];
+
+      const playFields = day.course ? `
+        <h4>Course — ${esc(day.course.name)}</h4>
+        <div class="field"><label>Address</label>${text(dk,"play.address","Street address of the course")}</div>
+        <div class="inline">
+          ${check(dk,"play.pay","Pay-to-play / fee")}
+          <span class="grow">${text(dk,"play.fee","Fee + how to pay (cash box, app, pro shop…)")}</span>
+        </div>
+        <div class="inline" style="margin-top:9px">
+          ${check(dk,"play.book","Pre-book / tee time required")}
+          <span class="grow">${text(dk,"play.bookNote","Booking link / time / contact")}</span>
+        </div>` : "";
+
+      return `<details open style="border-left-color:${ph.color}">
+        <summary>
+          <span class="date">${WD[d.getDay()]} ${MON[d.getMonth()]} ${d.getDate()}</span>
+          <span class="ttl">${esc(day.title)}</span>
+          <span class="tag" style="background:${ph.color}">${ph.label}</span>
+          ${drv?`<span class="drive">🚗 ${drv.miles} mi · ${drv.hours} hr</span>`:""}
+        </summary>
+        <div class="body">
+          <div class="known">
+            ${driveKnown}${playKnown}
+            <div><span class="lbl">📍 ${esc(day.location||"")}</span></div>
+            ${items}
+          </div>
+          ${idea?`<div class="ideas">🏕️ <b>Stay ideas:</b> ${esc(idea)}</div>`:""}
+          ${playFields}
+
+          <h4>Lodging</h4>
+          <div class="row2">
+            <div class="field"><label>Where I'm staying</label>${text(dk,"stay.where","Campground / spot name")}</div>
+            <div class="field"><label>Type</label>
+              <select data-day="${dk}" data-field="stay.type">
+                <option value="">TBD</option>
+                <option>Public land (dispersed / BLM / NF)</option>
+                <option>Public campground (NF / COE / state)</option>
+                <option>Paid private campground / RV park</option>
+                <option>Driveway / friend / home</option>
+                <option>Other</option>
+              </select></div>
+          </div>
+          <div class="field"><label>Address / coordinates</label>${text(dk,"stay.address","Where exactly")}</div>
+          <h4 style="margin-top:10px">Utilities</h4>
+          <div class="checks cols">
+            ${check(dk,"stay.util.electric","Electric hookup")}
+            ${check(dk,"stay.util.water","Water")}
+            ${check(dk,"stay.util.dump","Dump station")}
+            ${check(dk,"stay.util.showers","Showers")}
+            ${check(dk,"stay.util.cell","Cell signal")}
+          </div>
+          <div class="row2" style="margin-top:9px">
+            <div class="field"><label>Cost / night</label>${text(dk,"stay.cost","$ or free")}</div>
+            <div class="field"><label>&nbsp;</label>${check(dk,"stay.booked","Reserved / booked")}</div>
+          </div>
+
+          <h4>Research checklist</h4>
+          <div class="checks">
+            ${check(dk,"chk.findCamp","Find 2–3 nearby places to stay")}
+            ${check(dk,"chk.publicLand","Check public land within ~30 mi (BLM / NF / state / COE)")}
+            ${check(dk,"chk.courseAccess","Confirm course is open + any fee / access rules")}
+            ${check(dk,"chk.book","Book site / tee time if required")}
+            ${check(dk,"chk.services","Note water / dump / fuel / groceries near route")}
+          </div>
+
+          <h4>Notes</h4>
+          <textarea data-day="${dk}" data-field="notes" placeholder="Anything else for this day…"></textarea>
+        </div>
+      </details>`;
+    }
+
+    function prepSection() {
+      const d = "prep";
+      return `<details open style="border-left-color:#d9a441">
+        <summary><span class="date">Before you go</span>
+          <span class="ttl">Trip prep & gear</span></summary>
+        <div class="body">
+          <h4>Checklist</h4>
+          <div class="checks">
+            ${check(d,"rig","Camper/truck serviced — tires, fluids, propane, water tanks, battery")}
+            ${check(d,"atb","America the Beautiful pass (NF / federal site access & discounts)")}
+            ${check(d,"recgov","Recreation.gov account (book federal campgrounds)")}
+            ${check(d,"apps","Camping apps installed: iOverlander, Campendium, The Dyrt, FreeRoam")}
+            ${check(d,"udisc","UDisc Pro for course info / scorecards / directions")}
+            ${check(d,"offline","Offline maps downloaded for low-signal stretches")}
+            ${check(d,"gear","Discs, cart, rain gear, bug spray, water filter")}
+            ${check(d,"states","Skim state-park reservation systems (CO/KS/MO/IN/KY/MI/IA/NE differ)")}
+          </div>
+          <h4>Notes</h4>
+          <textarea data-day="${d}" data-field="notes" placeholder="General prep notes…"></textarea>
+        </div>
+      </details>`;
+    }
+
+    function populate() {
+      document.querySelectorAll("[data-field]").forEach(el => {
+        const v = get(el.dataset.day, el.dataset.field);
+        if (v === undefined) return;
+        if (el.type === "checkbox") { el.checked = !!v; el.closest(".chk")?.classList.toggle("done", !!v); }
+        else el.value = v;
+      });
+    }
+
+    function wire() {
+      const days = document.getElementById("days");
+      const handler = (e) => {
+        const el = e.target; if (!el.dataset || !el.dataset.field) return;
+        const val = el.type === "checkbox" ? el.checked : el.value;
+        set(el.dataset.day, el.dataset.field, val);
+        if (el.type === "checkbox") {
+          el.closest(".chk")?.classList.toggle("done", el.checked);
+          if (el.classList.contains("track")) updateProgress();
+        }
+      };
+      days.addEventListener("input", handler);
+      days.addEventListener("change", handler);
+      document.getElementById("expand").onclick = () => document.querySelectorAll("details").forEach(d=>d.open=true);
+      document.getElementById("collapse").onclick = () => document.querySelectorAll("details").forEach(d=>d.open=false);
+      document.getElementById("export").onclick = exportData;
+    }
+
+    function updateProgress() {
+      const all = document.querySelectorAll("input.track");
+      const done = [...all].filter(c=>c.checked).length;
+      document.getElementById("progress").innerHTML = `Checklist: <b>${done}</b> / ${all.length}`;
+    }
+
+    function exportData() {
+      const blob = new Blob([JSON.stringify(store, null, 2)], { type: "application/json" });
+      const a = document.createElement("a");
+      a.href = URL.createObjectURL(blob);
+      a.download = "sabbatical-plan.json";
+      a.click();
+      URL.revokeObjectURL(a.href);
+    }
+  </script>
+</body>
+</html>
