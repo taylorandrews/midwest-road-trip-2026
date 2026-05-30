@@ -24,19 +24,22 @@ KC (start)  →  fly to Denver  →  Buena Vista (truck prep)
 
 | Date | Plan |
 |------|------|
-| **Sat 8/8** | Wake in KC · fly to Denver · drive to Buena Vista (120 mi) · prep the truck · sleep in BV |
-| **Sun 8/9** | Wake in BV · drive NE, play **Buck Snort** (Pine, CO · CO #2) · 93 mi · sleep in CO |
-| **Mon 8/10** | Drive to **Sterling**, play **Optimist & Pessimist** (always wanted to) · 176 mi · sleep on road |
-| **Tue 8/11** | ⚠ Long haul east across KS, play **Jones Park: East** (Emporia · KS #9) · **500 mi / 9.8 hr** · sleep on road |
-| **Wed 8/12** | Play **Clauder's Bogey Barn** (Paola · KS #1 / US #47) · drive into KC · 127 mi · sleep in KC |
-| **Thu 8/13** | KC |
+| **Sat 8/8** | Wake in KC · fly to Denver · drive to Buena Vista / parents' (120 mi) · prep the truck · sleep in BV |
+| **Sun 8/9** | Flex day at parents' in BV · optional local round / rest · sleep in BV |
+| **Mon 8/10** | Leave parents' · **10am tee at Buck Snort** (Pine, CO · CO #2) · drive to Denver · 138 mi · sleep in Denver |
+| **Tue 8/11** | ⚠ Denver → **Sterling** (play **Optimist & Pessimist**) → push to Emporia · **634 mi / 12.3 hr** · sleep near Emporia |
+| **Wed 8/12** | Morning round at **Jones Park: East** (Emporia · KS #9) · drive home to KC · 109 mi · sleep at home |
+| **Thu 8/13** | **Clauder's Bogey Barn** day trip from KC (Paola · KS #1 / US #47) · ~90 mi round trip |
 | **Fri 8/14** | Woodside · house project? |
 | **Sat 8/15** | KC |
 | **Sun 8/16** | KC |
 
-> ⚠ **Aug 11 is a 500 mi / ~10 hr day** — Emporia is far into eastern Kansas.
-> If that's too much, swap Jones Park: East for a course nearer the Sterling→KC
-> line, or split it over two days.
+> ⚠ **Aug 11 is brutal: 634 mi / ~12 hr** of driving *plus* two rounds at
+> Sterling — not realistically doable. Sterling (NE CO) to Emporia (E KS) is
+> ~500 mi on its own. Options: (a) sleep partway (e.g., Salina, ~1.5 hr W of
+> Emporia) on the 11th and still play Emporia mid-morning on the 12th before
+> heading home; (b) drop Emporia from this loop and play a course nearer the
+> Sterling→KC line; (c) skip Sterling. Emporia→KC itself is only ~2 hr.
 
 ---
 

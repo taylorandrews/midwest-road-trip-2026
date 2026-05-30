@@ -32,8 +32,14 @@ road-trip-map/   # Standalone Leaflet map of the KC→Detroit leg (single route 
 course-map/      # Leaflet map of all courses (basket pins, no route) for research
 data/            # structured datasets for mapping
   course-rankings/   # UDisc 2026 rankings, deduped (world/US/route-state), geocoded
-trip-plan/       # schedule.json (calendar) + segments.json/build_segments.py ->
-                 #   route_segments.geojson (per-day drive lines) + itinerary.md
+plan/            # plan & checklist page (plan/index.html). Sections (phase) >
+                 #   days, both collapsible. Per-day fields persist in localStorage
+                 #   (key "sabbatical-plan-v1"); export JSON + print. Summary stats
+                 #   (rounds planned/played, goal = a round a day). Lodging captures
+                 #   "stay.coords" — staged for future stay->course->dest map lines.
+trip-plan/       # schedule.json (calendar; per-day rounds, locked, round_names) +
+                 #   segments.json/build_segments.py -> route_segments.geojson
+                 #   (per-day drive lines) + itinerary.md
 assets/          # working materials for the visual (exports/palettes/reference)
 .claude/         # this file
 README.md        # top-level overview tying it together
@@ -85,10 +91,16 @@ Structured UDisc **2026** course-ranking dataset, built for mapping.
 - **Map now covers the whole trip as per-day drive segments** (16 driving days,
   ~3,669 mi), defined in `trip-plan/segments.json`. Hover a calendar day to light
   up that day's line.
-- **Outbound CO→KC (Aug 8–12) planned:** Denver→BV (8/8); Buck Snort, Pine CO
-  (8/9); Sterling Optimist & Pessimist — not on UDisc lists, personal want (8/10);
-  Jones Park: East, Emporia (8/11, a 500 mi / ~10 hr day — flagged); Clauder's →
-  KC (8/12).
+- **Outbound CO→KC (Aug 8–13) planned:** Denver→BV (8/8); flex day at parents'
+  in BV (8/9); **Buck Snort 9:58am MT tee — booked/locked**, then drive to Denver
+  (8/10); Sterling Optimist & Pessimist (not on UDisc lists, personal want) then
+  push to Emporia (8/11 — **634 mi / 12.3 hr, flagged as not realistic**); morning
+  round at Jones Park: East then home to KC (8/12); Clauder's day trip from KC
+  (8/13).
+- **Locked:** Buck Snort tee (8/10 9:58am MT); **Worlds tickets bought (8/26–30)**
+  — no lodging yet (need 8/25–8/30 near Milford).
+- **Round-a-day goal:** 14 rounds planned across 31 days (tracked on the plan
+  page). Played rounds tracked via per-day checkboxes there.
 - **Fixed Buck Snort's coordinates** in the dataset: Nominatim's "Pine, Colorado"
   resolves to the wrong Pine (SW CO near Durango); corrected to the Buffalo
   Creek/Pine area SW of Denver (~39.39, -105.27).
