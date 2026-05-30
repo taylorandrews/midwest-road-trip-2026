@@ -25,7 +25,7 @@ KC (start)  →  fly to Denver  →  Buena Vista (truck prep)
 | Date | Plan |
 |------|------|
 | **Sat 8/8** | Wake in KC · fly to Denver · drive to Buena Vista / parents' (120 mi) · prep the truck · sleep in BV |
-| **Sun 8/9** | Flex day at parents' in BV · optional local round / rest · sleep in BV |
+| **Sun 8/9** | Flex day at parents' (BV) · day trip to Salida, play **Heart of the Rockies DGC** · ~50 mi round trip · sleep in BV |
 | **Mon 8/10** | Leave parents' · **10am tee at Buck Snort** (Pine, CO · CO #2) · drive to Denver · 138 mi · sleep in Denver |
 | **Tue 8/11** | ⚠ Denver → **Sterling** (play **Optimist & Pessimist**) → push to Emporia · **634 mi / 12.3 hr** · sleep near Emporia |
 | **Wed 8/12** | Morning round at **Jones Park: East** (Emporia · KS #9) · drive home to KC · 109 mi · sleep at home |

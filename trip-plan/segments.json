@@ -5,6 +5,11 @@
       { "name": "Denver, CO", "lat": 39.739236, "lon": -104.984862 },
       { "name": "Buena Vista, CO", "lat": 38.842218, "lon": -106.131129 }
     ]},
+    { "date": "2026-08-09", "label": "Heart of the Rockies day trip (Salida)", "waypoints": [
+      { "name": "Buena Vista, CO", "lat": 38.842218, "lon": -106.131129 },
+      { "name": "Heart of the Rockies DGC", "lat": 38.5347, "lon": -105.9989, "play": true, "note": "Salida, CO · flex-day round" },
+      { "name": "Buena Vista, CO", "lat": 38.842218, "lon": -106.131129 }
+    ]},
     { "date": "2026-08-10", "label": "BV → Buck Snort (10am tee) → Denver", "waypoints": [
       { "name": "Buena Vista, CO", "lat": 38.842218, "lon": -106.131129 },
       { "name": "Buck Snort", "lat": 39.386656, "lon": -105.270271, "play": true, "note": "Pine / Buffalo Creek, CO · CO #2 · 9:58am MT tee (signed up)" },
