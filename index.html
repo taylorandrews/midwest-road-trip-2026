@@ -171,11 +171,12 @@
         if (!e) { html += `<div class="cell blank"></div>`; continue; }
         const ph = phases[e.phase];
         const drv = driveByDate[k];
+        const icons = [e.course ? "🥏" : "", e.flight ? "✈️" : ""].filter(Boolean).join(" ");
         html += `<div class="cell trip${drv?" driving":""}" data-date="${k}" style="border-left-color:${ph.color}">
           <span class="num">${MON[d.getMonth()]} ${d.getDate()}</span>
-          ${e.course ? `<span class="play">🥏</span>` : ""}
+          ${icons ? `<span class="play">${icons}</span>` : ""}
           <div class="ttl">${e.title}</div>
-          ${drv ? `<div class="drive">🚗</div>` : ""}
+          ${drv ? `<div class="drive">🚗</div>` : (e.flight ? `<div class="drive" style="color:#6b9fff">✈️ ${e.flight.departs} ${e.flight.from} → ${e.flight.to}</div>` : "")}
         </div>`;
       }
       document.getElementById("grid").innerHTML = html;

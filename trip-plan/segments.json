@@ -1,25 +1,20 @@
 {
   "description": "Per-day driving segments for the trip. Each segment is the drive on a given date, routed through its waypoints. play:true waypoints are courses (basket markers); others are cities/overnights. Run build_segments.py to produce route_segments.geojson.",
   "segments": [
-    { "date": "2026-08-08", "label": "Denver → Buena Vista (parents')", "waypoints": [
-      { "name": "Denver, CO", "lat": 39.739236, "lon": -104.984862 },
-      { "name": "Buena Vista, CO", "lat": 38.842218, "lon": -106.131129 }
-    ]},
     { "date": "2026-08-09", "label": "Heart of the Rockies day trip (Salida)", "waypoints": [
       { "name": "Buena Vista, CO", "lat": 38.842218, "lon": -106.131129 },
       { "name": "Heart of the Rockies DGC", "lat": 38.5347, "lon": -105.9989, "play": true, "note": "Salida, CO · flex-day round" },
       { "name": "Buena Vista, CO", "lat": 38.842218, "lon": -106.131129 }
     ]},
-    { "date": "2026-08-10", "label": "BV → Buck Snort (10am tee) → Denver", "waypoints": [
+    { "date": "2026-08-10", "label": "BV → Buck Snort (9:58am tee) → Lower Badlands → Elizabeth", "waypoints": [
       { "name": "Buena Vista, CO", "lat": 38.842218, "lon": -106.131129 },
       { "name": "Buck Snort", "lat": 39.386656, "lon": -105.270271, "play": true, "note": "Pine / Buffalo Creek, CO · CO #2 · 9:58am MT tee (signed up)" },
-      { "name": "Denver, CO", "lat": 39.739236, "lon": -104.984862 }
+      { "name": "Lower Badlands (Camenisch Park)", "lat": 39.854688, "lon": -105.013658, "play": true, "note": "Westminster, CO · afternoon round" },
+      { "name": "Elizabeth, CO", "lat": 39.366768, "lon": -104.589790, "note": "camp near Elizabeth — Prickly Pines tomorrow" }
     ]},
-    { "date": "2026-08-11", "label": "Denver → Sterling (Optimist & Pessimist) → Emporia", "waypoints": [
-      { "name": "Denver, CO", "lat": 39.739236, "lon": -104.984862 },
-      { "name": "Optimist (Sterling)", "lat": 40.626514, "lon": -103.244614, "play": true, "note": "Sterling, CO · always wanted to play" },
-      { "name": "Pessimist (Sterling)", "lat": 40.619177, "lon": -103.184382, "play": true, "note": "Sterling, CO · always wanted to play" },
-      { "name": "Emporia, KS", "lat": 38.4039, "lon": -96.1817, "note": "overnight — set up for the morning round" }
+    { "date": "2026-08-11", "label": "Elizabeth → Prickly Pines → I-70 east → Council Grove, KS", "waypoints": [
+      { "name": "Prickly Pines DGC", "lat": 39.366768, "lon": -104.589790, "play": true, "note": "Elizabeth, CO · CO #7 · $5 pay station" },
+      { "name": "Council Grove, KS", "lat": 38.661633, "lon": -96.491376, "note": "Council Grove Lake COE — overnight, 35 mi from Emporia" }
     ]},
     { "date": "2026-08-12", "label": "Emporia (Jones Park East) → home to KC", "waypoints": [
       { "name": "Jones Park: East", "lat": 38.425373, "lon": -96.198864, "play": true, "note": "Emporia, KS · KS #9 · morning round" },

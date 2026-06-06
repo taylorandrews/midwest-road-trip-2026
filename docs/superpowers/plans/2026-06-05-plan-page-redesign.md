@@ -1,3 +1,82 @@
+# Plan Page Redesign Implementation Plan
+
+> **For agentic workers:** REQUIRED SUB-SKILL: Use superpowers:subagent-driven-development (recommended) or superpowers:executing-plans to implement this plan task-by-task. Steps use checkbox (`- [ ]`) syntax for tracking.
+
+**Goal:** Simplify plan/index.html into a flat operational guide: no collapsible menus, no checkboxes per day, just disc golf info (with UDisc links) and lodging fields per day.
+
+**Architecture:** Two changes — (1) add `udisc_url` to each `course` object in `trip-plan/schedule.json`, (2) rewrite `plan/index.html` rendering to flat day cards with two sections (disc golf, lodging) and no `<details>` collapsing or checkbox tracking beyond the pre-trip primary list.
+
+**Tech Stack:** Vanilla JS, Leaflet-free (this page has no map), localStorage for lodging name/address/notes and disc golf notes per day.
+
+---
+
+## File Map
+
+- **Modify:** `trip-plan/schedule.json` — add `udisc_url` field to each `course` object
+- **Rewrite:** `plan/index.html` — new flat layout, remove all collapsing and per-day checkboxes
+
+---
+
+### Task 1: Add UDisc URLs to schedule.json
+
+**Files:**
+- Modify: `trip-plan/schedule.json`
+
+- [ ] **Step 1: Add `udisc_url` to each course block**
+
+Open `trip-plan/schedule.json`. For each day with a `course` object, add the `udisc_url` field (empty string `""` if no known URL):
+
+| date | course.name | udisc_url |
+|------|-------------|-----------|
+| 2026-08-08 | Amy Lynch Memorial DGC | `https://udisc.com/courses/amy-lynch-memorial-dgc-IRn4` |
+| 2026-08-09 | Heart of the Rockies DGC | `https://udisc.com/courses/heart-of-the-rockies-dgc-CMrj` |
+| 2026-08-10 | Buck Snort | `https://udisc.com/courses/buck-snort-YPTo` |
+| 2026-08-11 | Optimist & Pessimist | `""` (personal want, not on UDisc ranking lists — skip link) |
+| 2026-08-12 | Jones Park: East | `https://udisc.com/courses/jones-park-east-uwaX` |
+| 2026-08-13 | Clauder's Bogey Barn | `https://udisc.com/courses/clauders-bogey-barn-LJCP` |
+| 2026-08-17 | Harmony Bends | `https://udisc.com/courses/harmony-bends-iSZl` |
+| 2026-08-18 | Eagles Crossing | `https://udisc.com/courses/championship-course-at-eagles-crossing-JQQP` |
+| 2026-08-19 | BC3 | `https://udisc.com/courses/bc-3-disc-golf-course-I57q` |
+| 2026-08-20 | Idlewild | `https://udisc.com/courses/idlewild-FVl4` |
+| 2026-08-22 | Rogers Lakewood / Lemon Lake | `https://udisc.com/courses/rogers-lakewood-park-disc-golf-course-tXcU` |
+| 2026-08-23 | Arvesta Sport Complex | `https://udisc.com/courses/arvesta-sport-complex-m1LJ` |
+| 2026-08-24 | Flip City | `https://udisc.com/courses/flip-city-disc-golf-park-Q6Sd` |
+| 2026-08-25 | Kensington Toboggan | `https://udisc.com/courses/kensington-toboggan-7NWQ` |
+
+Also add a second URL for Eagles Crossing's Wild Times course: add `udisc_url2: "https://udisc.com/courses/wild-times-at-eagles-crossing-0PxV"` on the 2026-08-18 course object (since you're playing both courses there).
+
+- [ ] **Step 2: Verify JSON is valid**
+
+```bash
+python3 -c "import json; json.load(open('trip-plan/schedule.json')); print('valid')"
+```
+
+Expected: `valid`
+
+- [ ] **Step 3: Commit**
+
+```bash
+git add trip-plan/schedule.json
+git commit -m "Add UDisc URLs to schedule.json course objects"
+```
+
+---
+
+### Task 2: Rewrite plan/index.html — structure and styles
+
+**Files:**
+- Rewrite: `plan/index.html`
+
+This is a full rewrite. The new page:
+- Keeps the same `KEY = "sabbatical-plan-v1"` localStorage key (backward-compatible field names where possible)
+- Removes: `<details>` collapsing for days and sections, all per-day checkboxes, progress counter, expand/collapse buttons, rounds-played tracking, utilities checklist, research checklist, type dropdown, coords/cost/booked fields
+- Keeps: primary pre-trip checklist (unchanged), stay ideas (1 line), locked info, drive stats, phase section headers (flat `<h2>`), export, print
+
+- [ ] **Step 1: Write the new HTML/CSS/JS**
+
+Replace `plan/index.html` with the following complete file:
+
+```html
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -37,7 +116,7 @@
     .chk input { width: 16px; height: 16px; accent-color: var(--ok); cursor: pointer; }
     .chk.done { border-color: var(--ok); color: var(--ok); }
 
-    /* trip summary line */
+    /* summary stats */
     .tripinfo { background: var(--card); border: 1px dashed var(--line); border-radius: 12px;
       padding: 9px 14px; margin-bottom: 22px; font-size: 13px; color: var(--muted); }
     .tripinfo b { color: var(--ink); }
@@ -55,7 +134,7 @@
       border-bottom: 1px solid var(--line); }
     .day-head .date { font-weight: 700; font-size: 14px; }
     .day-head .ttl { color: var(--ink); }
-    .day-head .drive { margin-left: auto; font-size: 12px; color: var(--gold); white-space: nowrap; }
+    .day-head .drive { margin-left: auto; font-size: 12px; color: var(--gold); }
     .day-body { padding: 10px 14px 14px; display: flex; flex-direction: column; gap: 8px; }
 
     .locked { background: rgba(40,224,200,.10); border: 1px solid rgba(40,224,200,.35);
@@ -63,39 +142,39 @@
     .stay-idea { font-size: 12.5px; color: var(--muted); }
     .stay-idea b { color: #b0bac8; }
 
-    /* section label within a day */
+    /* section headers within a day */
     .section-label { font-size: 11px; text-transform: uppercase; letter-spacing: .6px;
-      color: var(--muted); margin: 4px 0 4px; }
+      color: var(--muted); margin: 6px 0 4px; }
 
     /* disc golf block */
     .dg-block { background: #0e121b; border-radius: 9px; padding: 10px 12px; }
-    .dg-course + .dg-course { margin-top: 9px; padding-top: 9px; border-top: 1px solid var(--line); }
-    .dg-name { font-size: 14.5px; font-weight: 700; display: flex; align-items: center; flex-wrap: wrap; gap: 6px; }
+    .dg-name { font-size: 14.5px; font-weight: 700; }
     .dg-name a { color: var(--ink); text-decoration: none; }
     .dg-name a:hover { color: var(--ok); }
-    .dg-udisc { font-size: 11.5px;
+    .dg-udisc { display: inline-block; margin-left: 8px; font-size: 11.5px;
       background: rgba(40,224,200,.12); color: var(--ok); border: 1px solid rgba(40,224,200,.3);
-      border-radius: 5px; padding: 1px 7px; text-decoration: none; }
+      border-radius: 5px; padding: 1px 7px; text-decoration: none; vertical-align: middle; }
     .dg-udisc:hover { background: rgba(40,224,200,.22); }
     .dg-ranks { font-size: 12.5px; color: var(--muted); margin-top: 2px; }
-    .dg-note { margin-top: 8px; }
 
     /* lodging block */
     .lodge-block { background: #0e121b; border-radius: 9px; padding: 10px 12px;
-      display: grid; gap: 7px; }
+      display: grid; gap: 6px; }
     .field-row { display: flex; align-items: center; gap: 8px; }
     .field-row label { font-size: 11.5px; color: var(--muted); white-space: nowrap; min-width: 42px; }
 
-    input[type=text] {
+    input[type=text], textarea {
       background: transparent; color: var(--ink); border: none; border-bottom: 1px solid var(--line);
-      padding: 2px 4px; font: inherit; font-size: 13.5px; width: 100%; outline: none; }
-    input[type=text]:focus { border-bottom-color: var(--ok); }
-    textarea {
-      background: transparent; color: var(--ink); border: 1px solid var(--line);
-      border-radius: 6px; padding: 6px 8px; font: inherit; font-size: 13.5px; width: 100%;
-      min-height: 40px; resize: vertical; outline: none; }
+      border-radius: 0; padding: 3px 4px; font: inherit; font-size: 13.5px; width: 100%; outline: none; }
+    input[type=text]:focus, textarea:focus { border-bottom-color: var(--ok); }
+    textarea { min-height: 52px; resize: vertical; border: 1px solid var(--line);
+      border-radius: 6px; padding: 6px 8px; }
     textarea:focus { border-color: var(--ok); }
     input::placeholder, textarea::placeholder { color: #4a5168; }
+
+    /* disc golf note textarea (compact) */
+    .dg-note { margin-top: 7px; }
+    .dg-note textarea { min-height: 38px; }
 
     @media print {
       header { position: static; } .tools, .nav, .btn { display: none !important; }
@@ -127,7 +206,7 @@
     const set = (d,f,v) => { (store[d] = store[d]||{})[f]=v; save(); };
 
     const DEFAULTS = {
-      "2026-08-08": { "lodge.name": "Parents' camper", "lodge.address": "1875 Glen Gyle Dr, Buena Vista" },
+      "2026-08-08": { "stay.where": "Parents' camper — 1875 Glen Gyle Dr, Buena Vista" },
       "2026-08-10": { "dg.note": "9:58am MT tee — signed up" },
       "2026-08-26": { "lodge.notes": "Worlds tickets confirmed (Aug 26–30). Still need a place to stay near Milford." }
     };
@@ -145,8 +224,8 @@
     const STAY_IDEAS = {
       "2026-08-08": "Parents' camper — 1875 Glen Gyle Dr, Buena Vista.",
       "2026-08-09": "At parents' in BV.",
-      "2026-08-10": "Near Elizabeth/Franktown: Castlewood Canyon SP (~8 mi north of Elizabeth, ~$28, reservable); or Pike NF dispersed along Rampart Range Rd (~25 mi west).",
-      "2026-08-11": "Council Grove Lake COE (~35 mi NE of Emporia, right on the route) — Santa Fe Trail or Canning Creek campground, ~$18–22/night, reserve at Recreation.gov. Gets you 35 min from Jones Park for the morning round.",
+      "2026-08-10": "Denver — friends/family, or paid campground/RV park on the metro edge.",
+      "2026-08-11": "E Kansas public land is thin — Corps of Engineers lakes (Council Grove, Melvern); or paid near Emporia.",
       "2026-08-12": "Home — KC.", "2026-08-13": "Home — KC.",
       "2026-08-17": "Finger Lakes State Park (Columbia); Mark Twain NF to the south; COE Mark Twain Lake to the NE.",
       "2026-08-18": "Cuivre River State Park (Troy, MO); or paid near Warrenton.",
@@ -170,8 +249,8 @@
     let SCHEDULE, DRIVE = {};
 
     Promise.all([
-      fetch("../trip-plan/schedule.json?v=3").then(r=>r.json()),
-      fetch("../trip-plan/route_segments.geojson?v=3").then(r=>r.json()),
+      fetch("../trip-plan/schedule.json").then(r=>r.json()),
+      fetch("../trip-plan/route_segments.geojson").then(r=>r.json()),
     ]).then(([schedule, geo]) => {
       SCHEDULE = schedule;
       geo.features.filter(f=>f.properties.kind==="drive").forEach(f=>DRIVE[f.properties.date]=f.properties);
@@ -208,7 +287,7 @@
     function tripInfoLine(schedule) {
       const planned = schedule.days.reduce((s,d)=>s+(d.rounds||0),0);
       const days = schedule.days.length;
-      return `🗓 <b>${days}</b> trip days &nbsp;·&nbsp; 🥏 <b>${planned}</b> rounds planned &nbsp;·&nbsp; Aug 8 – Sep 7, 2026`;
+      return `🗓 <b>${days}</b> trip days · 🥏 <b>${planned}</b> rounds planned · Aug 8 – Sep 7, 2026`;
     }
 
     function sectionsHtml(schedule) {
@@ -237,27 +316,26 @@
         ? `<div class="locked">🔒 ${day.locked.map(esc).join(" · ")}</div>` : "";
       const idea = STAY_IDEAS[dk]
         ? `<div class="stay-idea">🏕 <b>Ideas:</b> ${esc(STAY_IDEAS[dk])}</div>` : "";
+
       const driveStr = drv ? `🚗 ${drv.miles} mi / ${drv.hours} hr` : "";
 
       let dgBlock = "";
-      const courses = [day.course, day.course2].filter(c => c && c.name && c.name !== "(travel day)");
-      if (courses.length) {
-        const courseHtml = courses.map(c => {
-          const nameHtml = c.udisc_url
-            ? `<a href="${esc(c.udisc_url)}" target="_blank" rel="noopener">${esc(c.name)}</a>`
-            : esc(c.name);
-          const udiscLink = c.udisc_url
-            ? `<a class="dg-udisc" href="${esc(c.udisc_url)}" target="_blank" rel="noopener">UDisc ↗</a>`
-            : "";
-          return `<div class="dg-course">
-            <div class="dg-name">${nameHtml}${udiscLink}</div>
-            ${c.ranks ? `<div class="dg-ranks">${esc(c.ranks)}</div>` : ""}
-          </div>`;
-        }).join("");
+      if (day.course && day.course.name && day.course.name !== "(travel day)") {
+        const c = day.course;
+        const nameHtml = c.udisc_url
+          ? `<a href="${esc(c.udisc_url)}" target="_blank" rel="noopener">${esc(c.name)}</a>`
+          : esc(c.name);
+        const udiscLink = c.udisc_url
+          ? `<a class="dg-udisc" href="${esc(c.udisc_url)}" target="_blank" rel="noopener">UDisc ↗</a>`
+          : "";
+        const udisc2Link = c.udisc_url2
+          ? ` <a class="dg-udisc" href="${esc(c.udisc_url2)}" target="_blank" rel="noopener">Wild Times ↗</a>`
+          : "";
         dgBlock = `<div>
-          <div class="section-label">Disc Golf${courses.length>1?` · ${courses.length} rounds`:""}</div>
+          <div class="section-label">Disc Golf</div>
           <div class="dg-block">
-            ${courseHtml}
+            <div class="dg-name">${nameHtml}${udiscLink}${udisc2Link}</div>
+            ${c.ranks?`<div class="dg-ranks">${esc(c.ranks)}</div>`:""}
             <div class="dg-note"><textarea data-day="${dk}" data-field="dg.note" placeholder="Notes…" rows="2"></textarea></div>
           </div>
         </div>`;
@@ -276,7 +354,7 @@
         <div class="day-head">
           <span class="date">${WD[d.getDay()]} ${MON[d.getMonth()]} ${d.getDate()}</span>
           <span class="ttl">${esc(day.title)}</span>
-          ${driveStr ? `<span class="drive">${driveStr}</span>` : ""}
+          ${driveStr?`<span class="drive">${driveStr}</span>`:""}
         </div>
         <div class="day-body">
           ${locked}${idea}${dgBlock}${lodgeBlock}
@@ -302,10 +380,35 @@
       });
       document.getElementById("export").onclick = () => {
         const blob = new Blob([JSON.stringify(store, null, 2)], { type: "application/json" });
-        const a = document.createElement("a"); a.href = URL.createObjectURL(blob);
-        a.download = "sabbatical-plan.json"; a.click(); URL.revokeObjectURL(a.href);
+        const a = document.createElement("a");
+        a.href = URL.createObjectURL(blob); a.download = "sabbatical-plan.json"; a.click();
+        URL.revokeObjectURL(a.href);
       };
     }
   </script>
 </body>
 </html>
+```
+
+- [ ] **Step 2: Serve and verify visually**
+
+```bash
+cd /path/to/sabbatical && python3 -m http.server 8000
+```
+
+Open `http://localhost:8000/plan/` and confirm:
+- Primary checklist renders with checkboxes
+- Phase headers appear (colored)
+- Day cards are flat (no expand/collapse)
+- Locked info shows in teal
+- Stay ideas show muted
+- Disc golf block shows course name, ranks, UDisc link button, note textarea
+- Lodging block shows name + address fields + notes textarea
+- Eagles Crossing (Aug 18) shows two UDisc links
+
+- [ ] **Step 3: Commit**
+
+```bash
+git add plan/index.html
+git commit -m "Redesign plan page: flat cards, disc golf + lodging sections, UDisc links"
+```
