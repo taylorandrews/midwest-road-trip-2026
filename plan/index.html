@@ -69,6 +69,7 @@
 
     /* disc golf block */
     .dg-block { background: #0e121b; border-radius: 9px; padding: 10px 12px; }
+    .dg-course + .dg-course { margin-top: 9px; padding-top: 9px; border-top: 1px solid var(--line); }
     .dg-name { font-size: 14.5px; font-weight: 700; display: flex; align-items: center; flex-wrap: wrap; gap: 6px; }
     .dg-name a { color: var(--ink); text-decoration: none; }
     .dg-name a:hover { color: var(--ok); }
@@ -169,8 +170,8 @@
     let SCHEDULE, DRIVE = {};
 
     Promise.all([
-      fetch("../trip-plan/schedule.json?v=2").then(r=>r.json()),
-      fetch("../trip-plan/route_segments.geojson?v=2").then(r=>r.json()),
+      fetch("../trip-plan/schedule.json?v=3").then(r=>r.json()),
+      fetch("../trip-plan/route_segments.geojson?v=3").then(r=>r.json()),
     ]).then(([schedule, geo]) => {
       SCHEDULE = schedule;
       geo.features.filter(f=>f.properties.kind==="drive").forEach(f=>DRIVE[f.properties.date]=f.properties);
@@ -239,23 +240,24 @@
       const driveStr = drv ? `🚗 ${drv.miles} mi / ${drv.hours} hr` : "";
 
       let dgBlock = "";
-      if (day.course && day.course.name && day.course.name !== "(travel day)") {
-        const c = day.course;
-        const nameHtml = c.udisc_url
-          ? `<a href="${esc(c.udisc_url)}" target="_blank" rel="noopener">${esc(c.name)}</a>`
-          : esc(c.name);
-        const udiscLink = c.udisc_url
-          ? `<a class="dg-udisc" href="${esc(c.udisc_url)}" target="_blank" rel="noopener">UDisc ↗</a>`
-          : "";
-        const udisc2Label = c.udisc_url2_label || "UDisc 2 ↗";
-        const udisc2Link = c.udisc_url2
-          ? ` <a class="dg-udisc" href="${esc(c.udisc_url2)}" target="_blank" rel="noopener">${udisc2Label}</a>`
-          : "";
-        dgBlock = `<div>
-          <div class="section-label">Disc Golf</div>
-          <div class="dg-block">
-            <div class="dg-name">${nameHtml}${udiscLink}${udisc2Link}</div>
+      const courses = [day.course, day.course2].filter(c => c && c.name && c.name !== "(travel day)");
+      if (courses.length) {
+        const courseHtml = courses.map(c => {
+          const nameHtml = c.udisc_url
+            ? `<a href="${esc(c.udisc_url)}" target="_blank" rel="noopener">${esc(c.name)}</a>`
+            : esc(c.name);
+          const udiscLink = c.udisc_url
+            ? `<a class="dg-udisc" href="${esc(c.udisc_url)}" target="_blank" rel="noopener">UDisc ↗</a>`
+            : "";
+          return `<div class="dg-course">
+            <div class="dg-name">${nameHtml}${udiscLink}</div>
             ${c.ranks ? `<div class="dg-ranks">${esc(c.ranks)}</div>` : ""}
+          </div>`;
+        }).join("");
+        dgBlock = `<div>
+          <div class="section-label">Disc Golf${courses.length>1?` · ${courses.length} rounds`:""}</div>
+          <div class="dg-block">
+            ${courseHtml}
             <div class="dg-note"><textarea data-day="${dk}" data-field="dg.note" placeholder="Notes…" rows="2"></textarea></div>
           </div>
         </div>`;
