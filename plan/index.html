@@ -3,7 +3,7 @@
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Trip Plan & Checklist — Sabbatical 2026</title>
+  <title>Trip Plan — Sabbatical 2026</title>
   <style>
     :root {
       --bg: #11151f; --card: #1b2130; --card2: #232b3d; --ink: #eef1f7;
@@ -16,104 +16,97 @@
 
     header { position: sticky; top: 0; z-index: 20; background: rgba(17,21,31,.95);
       backdrop-filter: blur(8px); border-bottom: 1px solid var(--line);
-      padding: 12px 20px; display: flex; align-items: center; gap: 14px; flex-wrap: wrap; }
+      padding: 10px 20px; display: flex; align-items: center; gap: 14px; flex-wrap: wrap; }
     header h1 { margin: 0; font-size: 16px; }
     header .nav { font-size: 13px; }
-    header .tools { margin-left: auto; display: flex; gap: 8px; align-items: center; flex-wrap: wrap; }
+    header .tools { margin-left: auto; display: flex; gap: 8px; align-items: center; }
     .btn { background: var(--card2); color: var(--ink); border: 1px solid var(--line);
       border-radius: 8px; padding: 6px 11px; font: inherit; font-size: 12.5px; cursor: pointer; }
     .btn:hover { border-color: var(--accent); }
-    .progress { font-size: 12.5px; color: var(--muted); }
-    .progress b { color: var(--ok); }
 
-    main { max-width: 880px; margin: 0 auto; padding: 18px 16px 80px; }
+    main { max-width: 860px; margin: 0 auto; padding: 18px 16px 80px; }
 
-    /* primary checklist */
+    /* pre-trip checklist */
     .primary { background: var(--card); border: 1px solid var(--line);
-      border-left: 5px solid var(--gold); border-radius: 12px; padding: 14px 16px; margin-bottom: 14px; }
+      border-left: 5px solid var(--gold); border-radius: 12px; padding: 14px 16px; margin-bottom: 16px; }
     .primary h2 { margin: 0 0 4px; font-size: 14px; }
     .primary .sub { color: var(--muted); font-size: 12.5px; margin-bottom: 10px; }
-
-    /* summary stats */
-    .stats { display: grid; grid-template-columns: repeat(3, 1fr); gap: 10px; margin-bottom: 8px; }
-    .stat { background: var(--card); border: 1px solid var(--line); border-radius: 12px;
-      padding: 12px 14px; text-align: center; }
-    .stat .big { font-size: 26px; font-weight: 800; line-height: 1; }
-    .stat .lbl { font-size: 11.5px; color: var(--muted); margin-top: 5px; text-transform: uppercase; letter-spacing: .5px; }
-    .stat.played .big { color: var(--ok); } .stat.planned .big { color: var(--accent); }
-    .goal { background: var(--card); border: 1px dashed var(--line); border-radius: 12px;
-      padding: 10px 14px; margin-bottom: 18px; font-size: 13px; color: var(--muted); }
-    .goal b { color: var(--ink); }
-    .bar { height: 7px; background: #0e121b; border-radius: 6px; margin-top: 7px; overflow: hidden; }
-    .bar > span { display: block; height: 100%; background: var(--ok); width: 0; transition: width .2s; }
-
-    /* sections + days (nested collapsibles) */
-    details { border-radius: 12px; }
-    summary { list-style: none; cursor: pointer; }
-    summary::-webkit-details-marker { display: none; }
-    .section { background: var(--card); border: 1px solid var(--line);
-      border-left: 5px solid var(--line); margin-bottom: 12px; }
-    .section > summary { padding: 13px 16px; display: flex; align-items: baseline; gap: 10px; flex-wrap: wrap; }
-    .section > summary .pl { font-weight: 700; font-size: 15px; }
-    .section > summary .meta { color: var(--muted); font-size: 12.5px; }
-    .section > summary .meta b { color: var(--ink); }
-    .section > summary .chev { margin-left: auto; color: var(--muted); transition: transform .15s; }
-    .section[open] > summary .chev { transform: rotate(90deg); }
-    .section .inner { padding: 0 12px 12px; }
-
-    .day { background: var(--card2); border: 1px solid var(--line); border-left: 4px solid var(--line);
-      margin: 8px 0; }
-    .day > summary { padding: 10px 13px; display: flex; align-items: center; gap: 9px; flex-wrap: wrap; }
-    .day > summary .date { font-weight: 700; }
-    .day > summary .ttl { color: var(--ink); }
-    .day > summary .badge { font-size: 11px; padding: 1px 7px; border-radius: 20px; background: #0e121b; color: var(--muted); }
-    .day > summary .badge.rounds { color: var(--accent); }
-    .day > summary .badge.stay-set { color: var(--ok); border: 1px solid rgba(40,224,200,.4); }
-    .day > summary .badge.drive { color: var(--gold); }
-    .day > summary .pushright { margin-left: auto; display: flex; gap: 6px; flex-wrap: wrap; }
-    .day .body { padding: 4px 14px 14px; border-top: 1px solid var(--line); }
-
-    .locked { background: rgba(40,224,200,.10); border: 1px solid rgba(40,224,200,.35);
-      color: var(--ok); border-radius: 8px; padding: 7px 11px; margin: 11px 0; font-size: 13px; }
-    .known { background: #0e121b; border-radius: 9px; padding: 10px 12px; margin: 11px 0; font-size: 13.5px; }
-    .known div { margin: 2px 0; } .known .lbl { color: var(--muted); }
-    .ideas { font-size: 13px; color: var(--muted); margin: 10px 0; padding: 9px 11px;
-      border: 1px dashed var(--line); border-radius: 9px; } .ideas b { color: var(--ink); }
-
-    h4 { margin: 15px 0 7px; font-size: 12px; text-transform: uppercase; letter-spacing: .6px; color: var(--muted); }
-    .field { display: flex; flex-direction: column; gap: 3px; margin-bottom: 9px; }
-    .field label { font-size: 12px; color: var(--muted); }
-    .row2 { display: grid; grid-template-columns: 1fr 1fr; gap: 9px; }
-    input[type=text], select, textarea {
-      background: #0e121b; color: var(--ink); border: 1px solid var(--line);
-      border-radius: 7px; padding: 7px 9px; font: inherit; font-size: 13.5px; width: 100%; }
-    textarea { min-height: 54px; resize: vertical; }
-    input::placeholder, textarea::placeholder { color: #5c6479; }
     .checks { display: grid; gap: 6px; }
-    .checks.cols { grid-template-columns: repeat(auto-fit, minmax(150px, 1fr)); }
     .chk { display: flex; align-items: center; gap: 8px; font-size: 13.5px;
       background: #0e121b; border: 1px solid var(--line); border-radius: 7px; padding: 7px 9px; cursor: pointer; }
     .chk input { width: 16px; height: 16px; accent-color: var(--ok); cursor: pointer; }
     .chk.done { border-color: var(--ok); color: var(--ok); }
-    .chk.round.done { border-color: var(--accent); color: var(--accent); }
-    .chk.round input { accent-color: var(--accent); }
-    .inline { display: flex; gap: 9px; align-items: center; flex-wrap: wrap; }
-    .inline .grow { flex: 1; min-width: 140px; }
+
+    /* trip summary line */
+    .tripinfo { background: var(--card); border: 1px dashed var(--line); border-radius: 12px;
+      padding: 9px 14px; margin-bottom: 22px; font-size: 13px; color: var(--muted); }
+    .tripinfo b { color: var(--ink); }
+
+    /* phase headers */
+    .phase-header { margin: 28px 0 10px; padding-bottom: 6px; border-bottom: 2px solid var(--line);
+      display: flex; align-items: baseline; gap: 10px; flex-wrap: wrap; }
+    .phase-header .ph-label { font-size: 15px; font-weight: 700; }
+    .phase-header .ph-meta { font-size: 12.5px; color: var(--muted); }
+
+    /* day cards */
+    .day { background: var(--card); border: 1px solid var(--line);
+      border-left: 4px solid var(--line); border-radius: 12px; margin-bottom: 10px; overflow: hidden; }
+    .day-head { padding: 11px 14px; display: flex; align-items: baseline; gap: 9px; flex-wrap: wrap;
+      border-bottom: 1px solid var(--line); }
+    .day-head .date { font-weight: 700; font-size: 14px; }
+    .day-head .ttl { color: var(--ink); }
+    .day-head .drive { margin-left: auto; font-size: 12px; color: var(--gold); white-space: nowrap; }
+    .day-body { padding: 10px 14px 14px; display: flex; flex-direction: column; gap: 8px; }
+
+    .locked { background: rgba(40,224,200,.10); border: 1px solid rgba(40,224,200,.35);
+      color: var(--ok); border-radius: 8px; padding: 6px 10px; font-size: 13px; }
+    .stay-idea { font-size: 12.5px; color: var(--muted); }
+    .stay-idea b { color: #b0bac8; }
+
+    /* section label within a day */
+    .section-label { font-size: 11px; text-transform: uppercase; letter-spacing: .6px;
+      color: var(--muted); margin: 4px 0 4px; }
+
+    /* disc golf block */
+    .dg-block { background: #0e121b; border-radius: 9px; padding: 10px 12px; }
+    .dg-name { font-size: 14.5px; font-weight: 700; display: flex; align-items: center; flex-wrap: wrap; gap: 6px; }
+    .dg-name a { color: var(--ink); text-decoration: none; }
+    .dg-name a:hover { color: var(--ok); }
+    .dg-udisc { font-size: 11.5px;
+      background: rgba(40,224,200,.12); color: var(--ok); border: 1px solid rgba(40,224,200,.3);
+      border-radius: 5px; padding: 1px 7px; text-decoration: none; }
+    .dg-udisc:hover { background: rgba(40,224,200,.22); }
+    .dg-ranks { font-size: 12.5px; color: var(--muted); margin-top: 2px; }
+    .dg-note { margin-top: 8px; }
+
+    /* lodging block */
+    .lodge-block { background: #0e121b; border-radius: 9px; padding: 10px 12px;
+      display: grid; gap: 7px; }
+    .field-row { display: flex; align-items: center; gap: 8px; }
+    .field-row label { font-size: 11.5px; color: var(--muted); white-space: nowrap; min-width: 42px; }
+
+    input[type=text] {
+      background: transparent; color: var(--ink); border: none; border-bottom: 1px solid var(--line);
+      padding: 2px 4px; font: inherit; font-size: 13.5px; width: 100%; outline: none; }
+    input[type=text]:focus { border-bottom-color: var(--ok); }
+    textarea {
+      background: transparent; color: var(--ink); border: 1px solid var(--line);
+      border-radius: 6px; padding: 6px 8px; font: inherit; font-size: 13.5px; width: 100%;
+      min-height: 40px; resize: vertical; outline: none; }
+    textarea:focus { border-color: var(--ok); }
+    input::placeholder, textarea::placeholder { color: #4a5168; }
 
     @media print {
       header { position: static; } .tools, .nav, .btn { display: none !important; }
-      details { break-inside: avoid; } body { background: #fff; color: #000; }
+      body { background: #fff; color: #000; }
     }
   </style>
 </head>
 <body>
   <header>
-    <h1>Trip Plan & Checklist 🥏</h1>
+    <h1>Trip Plan 🥏</h1>
     <span class="nav"><a href="../">← Calendar &amp; map</a></span>
     <div class="tools">
-      <span class="progress" id="progress">—</span>
-      <button class="btn" id="expand">Expand all</button>
-      <button class="btn" id="collapse">Collapse all</button>
       <button class="btn" id="export">Export</button>
       <button class="btn" onclick="window.print()">Print</button>
     </div>
@@ -121,8 +114,7 @@
 
   <main>
     <div class="primary" id="primary"></div>
-    <div class="stats" id="stats"></div>
-    <div class="goal" id="goal"></div>
+    <div class="tripinfo" id="tripinfo"></div>
     <div id="sections"></div>
   </main>
 
@@ -133,12 +125,11 @@
     const get = (d,f) => (store[d]||{})[f];
     const set = (d,f,v) => { (store[d] = store[d]||{})[f]=v; save(); };
 
-    // Hard-coded prefills for finalized details (user can still edit; saved edits win).
     const DEFAULTS = {
-      "2026-08-10": { "play.book": true, "play.bookNote": "9:58am MT tee — signed up" },
-      "2026-08-26": { "notes": "Worlds tickets confirmed (Aug 26–30). Still need a place to stay near Milford." }
+      "2026-08-08": { "lodge.name": "Parents' camper", "lodge.address": "1875 Glen Gyle Dr, Buena Vista" },
+      "2026-08-10": { "dg.note": "9:58am MT tee — signed up" },
+      "2026-08-26": { "lodge.notes": "Worlds tickets confirmed (Aug 26–30). Still need a place to stay near Milford." }
     };
-    // seed defaults into the store once (so they persist + export), without clobbering edits
     Object.entries(DEFAULTS).forEach(([d,fields]) => {
       Object.entries(fields).forEach(([f,v]) => {
         if (get(d,f) === undefined) set(d,f,v);
@@ -151,10 +142,10 @@
     const esc = s => (s||"").replace(/&/g,"&amp;").replace(/</g,"&lt;").replace(/>/g,"&gt;").replace(/"/g,"&quot;");
 
     const STAY_IDEAS = {
-      "2026-08-08": "Pike/San Isabel NF dispersed around Buena Vista; or paid in town.",
-      "2026-08-09": "At parents' in BV (lodging set).",
+      "2026-08-08": "Parents' camper — 1875 Glen Gyle Dr, Buena Vista.",
+      "2026-08-09": "At parents' in BV.",
       "2026-08-10": "Denver — friends/family, or paid campground/RV park on the metro edge.",
-      "2026-08-11": "E Kansas public land is thin — Corps of Engineers lakes (Council Grove, Melvern); or paid near Emporia. (Consider stopping in Salina to shorten the day.)",
+      "2026-08-11": "E Kansas public land is thin — Corps of Engineers lakes (Council Grove, Melvern); or paid near Emporia.",
       "2026-08-12": "Home — KC.", "2026-08-13": "Home — KC.",
       "2026-08-17": "Finger Lakes State Park (Columbia); Mark Twain NF to the south; COE Mark Twain Lake to the NE.",
       "2026-08-18": "Cuivre River State Park (Troy, MO); or paid near Warrenton.",
@@ -165,7 +156,7 @@
       "2026-08-23": "Van Buren State Park (South Haven, on the lake); MI state forest campgrounds.",
       "2026-08-24": "Silver Lake State Park (Mears) near Shelby; Manistee NF dispersed.",
       "2026-08-25": "Near Milford: Proud Lake / Island Lake / Highland State Rec Areas — book early, Worlds week is busy.",
-      "2026-08-26": "Worlds base near Milford/Detroit — reserve the whole 8/25–8/30 stretch ASAP (no spot yet).",
+      "2026-08-26": "Worlds base near Milford/Detroit — reserve the whole 8/25–8/30 stretch ASAP.",
       "2026-08-27": "Worlds base (same).", "2026-08-28": "Worlds base (same).",
       "2026-08-29": "Worlds base (same).", "2026-08-30": "Worlds base (same).",
       "2026-08-31": "COE Coralville Lake campgrounds near Iowa City.",
@@ -185,57 +176,41 @@
       geo.features.filter(f=>f.properties.kind==="drive").forEach(f=>DRIVE[f.properties.date]=f.properties);
 
       document.getElementById("primary").innerHTML = primaryBlock();
-      renderStatsScaffold(schedule);
+      document.getElementById("tripinfo").innerHTML = tripInfoLine(schedule);
       document.getElementById("sections").innerHTML = sectionsHtml(schedule);
 
       seedPopulate();
       wire();
-      refreshAllBadges();
-      updateProgress();
-      updateStats();
     }).catch(e => {
       document.getElementById("sections").innerHTML = "<p style='color:#98a1b5'>Couldn't load trip data — serve from the sabbatical folder.</p>";
       console.error(e);
     });
 
-    function text(day, field, ph) { return `<input type="text" data-day="${day}" data-field="${field}" placeholder="${ph||""}">`; }
-    function check(day, field, label, cls) {
-      return `<label class="chk ${cls||""}"><input type="checkbox" class="${(cls||"").includes("round")?"round":"track"}" data-day="${day}" data-field="${field}"> <span>${label}</span></label>`;
-    }
-    function dataCheck(day, field, label) { // not counted in any stat
-      return `<label class="chk"><input type="checkbox" data-day="${day}" data-field="${field}"> <span>${label}</span></label>`;
-    }
-
     function primaryBlock() {
       const d = "prep";
-      return `<h2>Before you go — primary checklist</h2>
-        <div class="sub">Trip-wide prep & gear.</div>
+      const chk = (field, label) =>
+        `<label class="chk"><input type="checkbox" data-day="${d}" data-field="${field}"> <span>${label}</span></label>`;
+      return `<h2>Before you go</h2>
+        <div class="sub">Trip-wide prep &amp; gear.</div>
         <div class="checks">
-          ${check(d,"rig","Camper/truck serviced — tires, fluids, propane, water tanks, battery")}
-          ${check(d,"atb","America the Beautiful pass (NF / federal access & discounts)")}
-          ${check(d,"recgov","Recreation.gov account (book federal campgrounds)")}
-          ${check(d,"apps","Camping apps: iOverlander, Campendium, The Dyrt, FreeRoam")}
-          ${check(d,"udisc","UDisc Pro for course info / scorecards / directions")}
-          ${check(d,"worldsstay","🎟️ Book Worlds-week lodging (8/25–8/30, Milford area) — tickets locked, no spot yet")}
-          ${check(d,"offline","Offline maps for low-signal stretches")}
-          ${check(d,"gear","Discs, cart, rain gear, bug spray, water filter")}
+          ${chk("rig","Camper/truck serviced — tires, fluids, propane, water tanks, battery")}
+          ${chk("atb","America the Beautiful pass (NF / federal access &amp; discounts)")}
+          ${chk("recgov","Recreation.gov account (book federal campgrounds)")}
+          ${chk("apps","Camping apps: iOverlander, Campendium, The Dyrt, FreeRoam")}
+          ${chk("udisc","UDisc Pro for course info / scorecards / directions")}
+          ${chk("worldsstay","🎟️ Book Worlds-week lodging (8/25–8/30, Milford area) — tickets locked, no spot yet")}
+          ${chk("offline","Offline maps for low-signal stretches")}
+          ${chk("gear","Discs, cart, rain gear, bug spray, water filter")}
         </div>`;
     }
 
-    function renderStatsScaffold(schedule) {
+    function tripInfoLine(schedule) {
       const planned = schedule.days.reduce((s,d)=>s+(d.rounds||0),0);
       const days = schedule.days.length;
-      document.getElementById("stats").innerHTML = `
-        <div class="stat planned"><div class="big" id="st-planned">${planned}</div><div class="lbl">Rounds planned</div></div>
-        <div class="stat played"><div class="big" id="st-played">0</div><div class="lbl">Rounds played</div></div>
-        <div class="stat"><div class="big">${days}</div><div class="lbl">Trip days</div></div>`;
-      document.getElementById("goal").innerHTML =
-        `🎯 Goal: <b>a round a day</b> — <b id="st-goalnum">0 / ${days}</b> rounds played
-         <div class="bar"><span id="st-bar"></span></div>`;
+      return `🗓 <b>${days}</b> trip days &nbsp;·&nbsp; 🥏 <b>${planned}</b> rounds planned &nbsp;·&nbsp; Aug 8 – Sep 7, 2026`;
     }
 
     function sectionsHtml(schedule) {
-      // group contiguous days by phase
       const groups = [];
       schedule.days.forEach(d => {
         const last = groups[groups.length-1];
@@ -247,103 +222,64 @@
         const a = pd(g.days[0].date), b = pd(g.days[g.days.length-1].date);
         const range = `${MON[a.getMonth()]} ${a.getDate()}–${a.getMonth()===b.getMonth()?b.getDate():MON[b.getMonth()]+" "+b.getDate()}`;
         const rounds = g.days.reduce((s,d)=>s+(d.rounds||0),0);
-        return `<details class="section" open style="border-left-color:${ph.color}">
-          <summary>
-            <span class="pl" style="color:${ph.color}">${ph.label}</span>
-            <span class="meta">${range} · <b>${g.days.length}</b> days · <b>${rounds}</b> rounds</span>
-            <span class="chev">▸</span>
-          </summary>
-          <div class="inner">${g.days.map(d=>dayHtml(d, schedule.phases)).join("")}</div>
-        </details>`;
+        return `<div class="phase-header" style="border-bottom-color:${ph.color}">
+          <span class="ph-label" style="color:${ph.color}">${ph.label}</span>
+          <span class="ph-meta">${range} · ${g.days.length} days${rounds?" · "+rounds+" rounds":""}</span>
+        </div>
+        ${g.days.map(d=>dayHtml(d, ph)).join("")}`;
       }).join("");
     }
 
-    function dayHtml(day, phases) {
-      const d = pd(day.date), ph = phases[day.phase], dk = day.date, drv = DRIVE[dk];
-      const items = (day.items||[]).map(i=>`<div>• ${esc(i)}</div>`).join("");
-      const playKnown = day.course ? `<div><span class="lbl">🥏 Play:</span> <b>${esc(day.course.name)}</b>${day.course.ranks?` · ${esc(day.course.ranks)}`:""}</div>` : "";
-      const driveKnown = drv ? `<div><span class="lbl">🚗 Drive:</span> ${esc(drv.label)} · ${drv.miles} mi / ${drv.hours} hr</div>` : "";
-      const locked = (day.locked||[]).length ? `<div class="locked">🔒 ${day.locked.map(esc).join(" · ")}</div>` : "";
-      const idea = STAY_IDEAS[dk];
+    function dayHtml(day, ph) {
+      const d = pd(day.date), dk = day.date, drv = DRIVE[dk];
+      const locked = (day.locked||[]).length
+        ? `<div class="locked">🔒 ${day.locked.map(esc).join(" · ")}</div>` : "";
+      const idea = STAY_IDEAS[dk]
+        ? `<div class="stay-idea">🏕 <b>Ideas:</b> ${esc(STAY_IDEAS[dk])}</div>` : "";
+      const driveStr = drv ? `🚗 ${drv.miles} mi / ${drv.hours} hr` : "";
 
-      // rounds-played tracking
-      let roundsBlock = "";
-      if (day.rounds > 0) {
-        const names = day.round_names || [];
-        let boxes = "";
-        for (let i=0;i<day.rounds;i++) {
-          const label = names[i] ? `${esc(names[i])} played` : (day.course ? `${esc(day.course.name)} played` : `Round ${i+1} played`);
-          boxes += check(dk, `round.${i}`, label, "round");
-        }
-        roundsBlock = `<h4>Rounds played (${day.rounds} planned)</h4><div class="checks cols">${boxes}</div>`;
+      let dgBlock = "";
+      if (day.course && day.course.name && day.course.name !== "(travel day)") {
+        const c = day.course;
+        const nameHtml = c.udisc_url
+          ? `<a href="${esc(c.udisc_url)}" target="_blank" rel="noopener">${esc(c.name)}</a>`
+          : esc(c.name);
+        const udiscLink = c.udisc_url
+          ? `<a class="dg-udisc" href="${esc(c.udisc_url)}" target="_blank" rel="noopener">UDisc ↗</a>`
+          : "";
+        const udisc2Label = dk === "2026-08-18" ? "Wild Times ↗" : "Lemon Lake ↗";
+        const udisc2Link = c.udisc_url2
+          ? ` <a class="dg-udisc" href="${esc(c.udisc_url2)}" target="_blank" rel="noopener">${udisc2Label}</a>`
+          : "";
+        dgBlock = `<div>
+          <div class="section-label">Disc Golf</div>
+          <div class="dg-block">
+            <div class="dg-name">${nameHtml}${udiscLink}${udisc2Link}</div>
+            ${c.ranks ? `<div class="dg-ranks">${esc(c.ranks)}</div>` : ""}
+            <div class="dg-note"><textarea data-day="${dk}" data-field="dg.note" placeholder="Notes…" rows="2"></textarea></div>
+          </div>
+        </div>`;
       }
 
-      const playFields = day.course ? `
-        <h4>Course — ${esc(day.course.name)}</h4>
-        <div class="field"><label>Address</label>${text(dk,"play.address","Street address of the course")}</div>
-        <div class="inline">${dataCheck(dk,"play.pay","Pay-to-play / fee")}<span class="grow">${text(dk,"play.fee","Fee + how to pay")}</span></div>
-        <div class="inline" style="margin-top:9px">${dataCheck(dk,"play.book","Pre-book / tee time")}<span class="grow">${text(dk,"play.bookNote","Booking link / time / contact")}</span></div>` : "";
+      const lodgeBlock = `<div>
+        <div class="section-label">Lodging</div>
+        <div class="lodge-block">
+          <div class="field-row"><label>Name</label><input type="text" data-day="${dk}" data-field="lodge.name" placeholder="Campground / spot name"></div>
+          <div class="field-row"><label>Addr</label><input type="text" data-day="${dk}" data-field="lodge.address" placeholder="Address or coordinates"></div>
+          <textarea data-day="${dk}" data-field="lodge.notes" placeholder="Notes — cost, booking status, utilities, backup options…"></textarea>
+        </div>
+      </div>`;
 
-      return `<details class="day" style="border-left-color:${ph.color}" data-date="${dk}">
-        <summary>
+      return `<div class="day" style="border-left-color:${ph.color}">
+        <div class="day-head">
           <span class="date">${WD[d.getDay()]} ${MON[d.getMonth()]} ${d.getDate()}</span>
           <span class="ttl">${esc(day.title)}</span>
-          <span class="pushright">
-            ${day.rounds>0?`<span class="badge rounds" id="rb-${dk}">🥏 0/${day.rounds}</span>`:""}
-            ${drv?`<span class="badge drive">🚗 ${drv.miles} mi</span>`:""}
-            <span class="badge" id="sb-${dk}">🏕️ TBD</span>
-          </span>
-        </summary>
-        <div class="body">
-          ${locked}
-          <div class="known">${driveKnown}${playKnown}<div><span class="lbl">📍 ${esc(day.location||"")}</span></div>${items}</div>
-          ${idea?`<div class="ideas">🏕️ <b>Stay ideas:</b> ${esc(idea)}</div>`:""}
-          ${roundsBlock}
-          ${playFields}
-
-          <h4>Lodging</h4>
-          <div class="row2">
-            <div class="field"><label>Where I'm staying</label>${text(dk,"stay.where","Campground / spot name")}</div>
-            <div class="field"><label>Type</label>
-              <select data-day="${dk}" data-field="stay.type">
-                <option value="">TBD</option>
-                <option>Public land (dispersed / BLM / NF)</option>
-                <option>Public campground (NF / COE / state)</option>
-                <option>Paid private campground / RV park</option>
-                <option>Driveway / friend / home</option>
-                <option>Other</option>
-              </select></div>
-          </div>
-          <div class="row2">
-            <div class="field"><label>Address</label>${text(dk,"stay.address","Where exactly")}</div>
-            <div class="field"><label>Coordinates (lat, lon)</label>${text(dk,"stay.coords","paste from Google Maps — used for map lines later")}</div>
-          </div>
-          <h4 style="margin-top:10px">Utilities</h4>
-          <div class="checks cols">
-            ${dataCheck(dk,"stay.util.electric","Electric")}
-            ${dataCheck(dk,"stay.util.water","Water")}
-            ${dataCheck(dk,"stay.util.dump","Dump station")}
-            ${dataCheck(dk,"stay.util.showers","Showers")}
-            ${dataCheck(dk,"stay.util.cell","Cell signal")}
-          </div>
-          <div class="row2" style="margin-top:9px">
-            <div class="field"><label>Cost / night</label>${text(dk,"stay.cost","$ or free")}</div>
-            <div class="field"><label>&nbsp;</label>${dataCheck(dk,"stay.booked","Reserved / booked")}</div>
-          </div>
-
-          <h4>Research checklist</h4>
-          <div class="checks">
-            ${check(dk,"chk.findCamp","Find 2–3 nearby places to stay")}
-            ${check(dk,"chk.publicLand","Check public land within ~30 mi (BLM / NF / state / COE)")}
-            ${check(dk,"chk.courseAccess","Confirm course is open + any fee / access rules")}
-            ${check(dk,"chk.book","Book site / tee time if required")}
-            ${check(dk,"chk.services","Note water / dump / fuel / groceries near route")}
-          </div>
-
-          <h4>Notes</h4>
-          <textarea data-day="${dk}" data-field="notes" placeholder="Anything else for this day…"></textarea>
+          ${driveStr ? `<span class="drive">${driveStr}</span>` : ""}
         </div>
-      </details>`;
+        <div class="day-body">
+          ${locked}${idea}${dgBlock}${lodgeBlock}
+        </div>
+      </div>`;
     }
 
     function seedPopulate() {
@@ -356,61 +292,17 @@
     }
 
     function wire() {
-      const root = document.getElementById("sections");
-      const main = document.querySelector("main");
-      const handler = (e) => {
-        const el = e.target; if (!el.dataset || !el.dataset.field) return;
+      document.querySelector("main").addEventListener("input", e => {
+        const el = e.target; if (!el.dataset?.field) return;
         const val = el.type === "checkbox" ? el.checked : el.value;
         set(el.dataset.day, el.dataset.field, val);
-        if (el.type === "checkbox") {
-          el.closest(".chk")?.classList.toggle("done", el.checked);
-          if (el.classList.contains("track")) updateProgress();
-          if (el.classList.contains("round")) { updateStats(); refreshRounds(el.dataset.day); }
-        }
-        if (el.dataset.field.startsWith("stay.")) refreshStay(el.dataset.day);
+        if (el.type === "checkbox") el.closest(".chk")?.classList.toggle("done", el.checked);
+      });
+      document.getElementById("export").onclick = () => {
+        const blob = new Blob([JSON.stringify(store, null, 2)], { type: "application/json" });
+        const a = document.createElement("a"); a.href = URL.createObjectURL(blob);
+        a.download = "sabbatical-plan.json"; a.click(); URL.revokeObjectURL(a.href);
       };
-      main.addEventListener("input", handler);
-      main.addEventListener("change", handler);
-      document.getElementById("expand").onclick = () => document.querySelectorAll("details").forEach(d=>d.open=true);
-      document.getElementById("collapse").onclick = () => document.querySelectorAll(".day").forEach(d=>d.open=false);
-      document.getElementById("export").onclick = exportData;
-    }
-
-    function updateProgress() {
-      const all = document.querySelectorAll("input.track");
-      const done = [...all].filter(c=>c.checked).length;
-      document.getElementById("progress").innerHTML = `Checklist: <b>${done}</b> / ${all.length}`;
-    }
-    function updateStats() {
-      const played = document.querySelectorAll("input.round:checked").length;
-      const days = SCHEDULE.days.length;
-      document.getElementById("st-played").textContent = played;
-      document.getElementById("st-goalnum").textContent = `${played} / ${days}`;
-      document.getElementById("st-bar").style.width = Math.min(100, played/days*100) + "%";
-    }
-    function refreshRounds(date) {
-      const el = document.getElementById("rb-"+date); if (!el) return;
-      const boxes = document.querySelectorAll(`.day[data-date="${date}"] input.round`);
-      const done = [...boxes].filter(b=>b.checked).length;
-      el.textContent = `🥏 ${done}/${boxes.length}`;
-    }
-    function refreshStay(date) {
-      const el = document.getElementById("sb-"+date); if (!el) return;
-      const where = get(date,"stay.where"), booked = get(date,"stay.booked");
-      el.className = "badge";
-      if (booked) { el.classList.add("stay-set"); el.textContent = "🏕️ booked"; }
-      else if (where) { el.classList.add("stay-set"); el.textContent = "🏕️ " + (where.length>16?where.slice(0,16)+"…":where); }
-      else el.textContent = "🏕️ TBD";
-    }
-    function refreshAllBadges() {
-      document.querySelectorAll(".day").forEach(d => { refreshStay(d.dataset.date); refreshRounds(d.dataset.date); });
-    }
-
-    function exportData() {
-      const blob = new Blob([JSON.stringify(store, null, 2)], { type: "application/json" });
-      const a = document.createElement("a");
-      a.href = URL.createObjectURL(blob); a.download = "sabbatical-plan.json"; a.click();
-      URL.revokeObjectURL(a.href);
     }
   </script>
 </body>
