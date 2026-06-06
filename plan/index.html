@@ -144,8 +144,8 @@
     const STAY_IDEAS = {
       "2026-08-08": "Parents' camper — 1875 Glen Gyle Dr, Buena Vista.",
       "2026-08-09": "At parents' in BV.",
-      "2026-08-10": "Denver — friends/family, or paid campground/RV park on the metro edge.",
-      "2026-08-11": "E Kansas public land is thin — Corps of Engineers lakes (Council Grove, Melvern); or paid near Emporia.",
+      "2026-08-10": "Near Elizabeth/Franktown: Castlewood Canyon SP (~8 mi north of Elizabeth, ~$28, reservable); or Pike NF dispersed along Rampart Range Rd (~25 mi west).",
+      "2026-08-11": "Council Grove Lake COE (~35 mi NE of Emporia, right on the route) — Santa Fe Trail or Canning Creek campground, ~$18–22/night, reserve at Recreation.gov. Gets you 35 min from Jones Park for the morning round.",
       "2026-08-12": "Home — KC.", "2026-08-13": "Home — KC.",
       "2026-08-17": "Finger Lakes State Park (Columbia); Mark Twain NF to the south; COE Mark Twain Lake to the NE.",
       "2026-08-18": "Cuivre River State Park (Troy, MO); or paid near Warrenton.",
@@ -169,8 +169,8 @@
     let SCHEDULE, DRIVE = {};
 
     Promise.all([
-      fetch("../trip-plan/schedule.json").then(r=>r.json()),
-      fetch("../trip-plan/route_segments.geojson").then(r=>r.json()),
+      fetch("../trip-plan/schedule.json?v=2").then(r=>r.json()),
+      fetch("../trip-plan/route_segments.geojson?v=2").then(r=>r.json()),
     ]).then(([schedule, geo]) => {
       SCHEDULE = schedule;
       geo.features.filter(f=>f.properties.kind==="drive").forEach(f=>DRIVE[f.properties.date]=f.properties);
@@ -247,7 +247,7 @@
         const udiscLink = c.udisc_url
           ? `<a class="dg-udisc" href="${esc(c.udisc_url)}" target="_blank" rel="noopener">UDisc ↗</a>`
           : "";
-        const udisc2Label = dk === "2026-08-18" ? "Wild Times ↗" : "Lemon Lake ↗";
+        const udisc2Label = c.udisc_url2_label || "UDisc 2 ↗";
         const udisc2Link = c.udisc_url2
           ? ` <a class="dg-udisc" href="${esc(c.udisc_url2)}" target="_blank" rel="noopener">${udisc2Label}</a>`
           : "";
