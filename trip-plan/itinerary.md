@@ -59,7 +59,7 @@ are course-to-course.
 | **Sat 8/22** | local | **Lake Michigan day** — play Rogers Lakewood (IN 4) and/or Lemon Lake (IN 8); Indiana Dunes NP beach | IN 4 / IN 8 | 🏕️ Camp — **night 2** |
 | **Sun 8/23** | 88 mi / 1.7 hr | **Arvesta Sport Complex** (South Haven, MI) | 🌎78 · 🇺🇸52 · MI 4 | West MI lakeshore |
 | **Mon 8/24** | 95 mi / 1.9 hr | **Flip City** (Shelby, MI) | 🌎35 · 🇺🇸20 · MI 1 | West MI |
-| **Tue 8/25** | 190 mi / 3.6 hr | **Kensington Toboggan** (Milford Twp, MI) — arrive at Worlds venue | 🌎63 · 🇺🇸40 · MI 2 | Near Detroit |
+| **Tue 8/25** | 198 mi / 3.9 hr | **Kensington Toboggan** (Milford Twp, MI) — then set up Worlds basecamp | 🌎63 · 🇺🇸40 · MI 2 | 🏕️ **Proud Lake Rec Area, Site 68** — check in after 3 PM |
 
 **Notes & open items**
 - *Eagles Crossing* = one stop, two rounds (Championship Course #1 in MO, Wild
@@ -82,7 +82,9 @@ are course-to-course.
 | **Sat 8/29** | Worlds — Day 4 |
 | **Sun 8/30** | Worlds — Day 5 |
 
-> Based near Kensington Toboggan (Milford Twp, MI) for the week.
+> 🏕️ **Basecamp: Proud Lake Recreation Area, Site 68** (2928 Glengary Rd, Commerce Twp, MI 48382) —
+> booked Aug 25–31, 6 nights, conf INMI26-3900592B1. ~7 mi east of Kensington Toboggan.
+> No sewer hookup; Recreation Passport required for park entry.
 
 ---
 
@@ -90,7 +92,7 @@ are course-to-course.
 
 | Date | Plan |
 |------|------|
-| **Mon 8/31** | Wake outside Detroit · drive to Iowa City · sleep Iowa City |
+| **Mon 8/31** | Wake at Proud Lake · check out by 1 PM · drive to Iowa City · sleep Iowa City |
 | **Tue 9/1** | Spend the day in Iowa City · sleep Iowa City |
 | **Wed 9/2** | Drive halfway to Denver via Nebraska · sleep on the road? |
 | **Thu 9/3** | Wake in Nebraska · drive to BV · sleep BV/Denver |
