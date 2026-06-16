@@ -78,18 +78,7 @@
       border-radius: 5px; padding: 1px 7px; text-decoration: none; }
     .dg-udisc:hover { background: rgba(40,224,200,.22); }
     .dg-ranks { font-size: 12.5px; color: var(--muted); margin-top: 2px; }
-    .dg-note { margin-top: 8px; }
 
-    /* lodging block */
-    .lodge-block { background: #0e121b; border-radius: 9px; padding: 10px 12px;
-      display: grid; gap: 7px; }
-    .field-row { display: flex; align-items: center; gap: 8px; }
-    .field-row label { font-size: 11.5px; color: var(--muted); white-space: nowrap; min-width: 42px; }
-
-    input[type=text] {
-      background: transparent; color: var(--ink); border: none; border-bottom: 1px solid var(--line);
-      padding: 2px 4px; font: inherit; font-size: 13.5px; width: 100%; outline: none; }
-    input[type=text]:focus { border-bottom-color: var(--ok); }
     textarea {
       background: transparent; color: var(--ink); border: 1px solid var(--line);
       border-radius: 6px; padding: 6px 8px; font: inherit; font-size: 13.5px; width: 100%;
@@ -126,11 +115,46 @@
     const get = (d,f) => (store[d]||{})[f];
     const set = (d,f,v) => { (store[d] = store[d]||{})[f]=v; save(); };
 
+    const PROUD_LAKE_SUMMARY =
+      "🏕️ Proud Lake Rec Area — Site 68 (loc 55-110), 2928 Glengary Rd, Commerce Twp, MI 48382. " +
+      "Booked Aug 25–31, 6 nights, $206 paid · conf INMI26-3900592B1. " +
+      "Check in Tue 8/25 3 PM, check out Mon 8/31 1 PM. Truck camper, no sewer hookup. " +
+      "Recreation Passport required. (248)685-2433.";
     const DEFAULTS = {
-      "2026-08-08": { "lodge.name": "Parents' camper", "lodge.address": "1875 Glen Gyle Dr, Buena Vista" },
-      "2026-08-10": { "dg.note": "9:58am MT tee — signed up" },
-      "2026-08-26": { "lodge.notes": "Worlds tickets confirmed (Aug 26–30). Still need a place to stay near Milford." }
+      "2026-08-08": { "summary": "Parents' camper — 1875 Glen Gyle Dr, Buena Vista." },
+      "2026-08-25": { "summary": PROUD_LAKE_SUMMARY },
+      "2026-08-26": { "summary": PROUD_LAKE_SUMMARY },
+      "2026-08-27": { "summary": PROUD_LAKE_SUMMARY },
+      "2026-08-28": { "summary": PROUD_LAKE_SUMMARY },
+      "2026-08-29": { "summary": PROUD_LAKE_SUMMARY },
+      "2026-08-30": { "summary": PROUD_LAKE_SUMMARY }
     };
+    // One-time migration: the per-day Lodging fields (name/address/notes) were
+    // replaced by a single free-text "summary". Fold any saved lodging into it.
+    if (!store.__summary_v1) {
+      const STALE = "Worlds tickets confirmed (Aug 26–30). Still need a place to stay near Milford.";
+      Object.values(store).forEach(r => {
+        if (!r || typeof r !== "object") return;
+        if (r.summary === undefined) {
+          const notes = r["lodge.notes"] === STALE ? "" : (r["lodge.notes"] || "");
+          const parts = [r["lodge.name"], r["lodge.address"], notes].filter(Boolean);
+          if (parts.length) r.summary = parts.join(" — ");
+        }
+        delete r["lodge.name"]; delete r["lodge.address"]; delete r["lodge.notes"];
+      });
+      store.__summary_v1 = true; save();
+    }
+    // v2: the per-day disc-golf note box was removed — fold any saved dg.note
+    // into the day summary so nothing typed there is lost.
+    if (!store.__summary_v2) {
+      Object.values(store).forEach(r => {
+        if (!r || typeof r !== "object") return;
+        const note = r["dg.note"];
+        if (note) r.summary = r.summary ? `${r.summary}\n${note}` : note;
+        delete r["dg.note"];
+      });
+      store.__summary_v2 = true; save();
+    }
     Object.entries(DEFAULTS).forEach(([d,fields]) => {
       Object.entries(fields).forEach(([f,v]) => {
         if (get(d,f) === undefined) set(d,f,v);
@@ -156,10 +180,10 @@
       "2026-08-22": "Same Lake Michigan base (Indiana Dunes).",
       "2026-08-23": "Van Buren State Park (South Haven, on the lake); MI state forest campgrounds.",
       "2026-08-24": "Silver Lake State Park (Mears) near Shelby; Manistee NF dispersed.",
-      "2026-08-25": "Near Milford: Proud Lake / Island Lake / Highland State Rec Areas — book early, Worlds week is busy.",
-      "2026-08-26": "Worlds base near Milford/Detroit — reserve the whole 8/25–8/30 stretch ASAP.",
-      "2026-08-27": "Worlds base (same).", "2026-08-28": "Worlds base (same).",
-      "2026-08-29": "Worlds base (same).", "2026-08-30": "Worlds base (same).",
+      "2026-08-25": "✅ Booked: Proud Lake Rec Area, Site 68 — 2928 Glengary Rd, Commerce Twp. Check in after 3 PM (self check-in pilot, online after 11 AM).",
+      "2026-08-26": "✅ Proud Lake Rec Area, Site 68 — Worlds basecamp through 8/31. No sewer hookup; Recreation Passport required for entry.",
+      "2026-08-27": "✅ Proud Lake basecamp (Site 68).", "2026-08-28": "✅ Proud Lake basecamp (Site 68).",
+      "2026-08-29": "✅ Proud Lake basecamp (Site 68).", "2026-08-30": "✅ Proud Lake basecamp (Site 68) — last night; check out by 1 PM tomorrow.",
       "2026-08-31": "COE Coralville Lake campgrounds near Iowa City.",
       "2026-09-01": "Iowa City — COE Coralville Lake, or city/county park.",
       "2026-09-02": "Fort Kearny State Rec Area (Kearney); Nebraska SRAs along I-80.",
@@ -170,8 +194,8 @@
     let SCHEDULE, DRIVE = {};
 
     Promise.all([
-      fetch("../trip-plan/schedule.json?v=3").then(r=>r.json()),
-      fetch("../trip-plan/route_segments.geojson?v=3").then(r=>r.json()),
+      fetch("../trip-plan/schedule.json?v=4").then(r=>r.json()),
+      fetch("../trip-plan/route_segments.geojson?v=4").then(r=>r.json()),
     ]).then(([schedule, geo]) => {
       SCHEDULE = schedule;
       geo.features.filter(f=>f.properties.kind==="drive").forEach(f=>DRIVE[f.properties.date]=f.properties);
@@ -199,7 +223,7 @@
           ${chk("recgov","Recreation.gov account (book federal campgrounds)")}
           ${chk("apps","Camping apps: iOverlander, Campendium, The Dyrt, FreeRoam")}
           ${chk("udisc","UDisc Pro for course info / scorecards / directions")}
-          ${chk("worldsstay","🎟️ Book Worlds-week lodging (8/25–8/30, Milford area) — tickets locked, no spot yet")}
+          ${chk("worldsstay","🏕️ Worlds-week lodging booked — Proud Lake Rec Area, Site 68 (Aug 25–31, conf INMI26-3900592B1)")}
           ${chk("offline","Offline maps for low-signal stretches")}
           ${chk("gear","Discs, cart, rain gear, bug spray, water filter")}
         </div>`;
@@ -254,22 +278,12 @@
             ${c.ranks ? `<div class="dg-ranks">${esc(c.ranks)}</div>` : ""}
           </div>`;
         }).join("");
-        dgBlock = `<div>
-          <div class="section-label">Disc Golf${courses.length>1?` · ${courses.length} rounds`:""}</div>
-          <div class="dg-block">
-            ${courseHtml}
-            <div class="dg-note"><textarea data-day="${dk}" data-field="dg.note" placeholder="Notes…" rows="2"></textarea></div>
-          </div>
-        </div>`;
+        dgBlock = `<div class="dg-block">${courseHtml}</div>`;
       }
 
-      const lodgeBlock = `<div>
-        <div class="section-label">Lodging</div>
-        <div class="lodge-block">
-          <div class="field-row"><label>Name</label><input type="text" data-day="${dk}" data-field="lodge.name" placeholder="Campground / spot name"></div>
-          <div class="field-row"><label>Addr</label><input type="text" data-day="${dk}" data-field="lodge.address" placeholder="Address or coordinates"></div>
-          <textarea data-day="${dk}" data-field="lodge.notes" placeholder="Notes — cost, booking status, utilities, backup options…"></textarea>
-        </div>
+      const summaryBlock = `<div>
+        <div class="section-label">Day summary</div>
+        <textarea data-day="${dk}" data-field="summary" placeholder="Anything about the day — lodging, food, logistics, notes…"></textarea>
       </div>`;
 
       return `<div class="day" style="border-left-color:${ph.color}">
@@ -279,7 +293,7 @@
           ${driveStr ? `<span class="drive">${driveStr}</span>` : ""}
         </div>
         <div class="day-body">
-          ${locked}${idea}${dgBlock}${lodgeBlock}
+          ${locked}${idea}${summaryBlock}${dgBlock}
         </div>
       </div>`;
     }

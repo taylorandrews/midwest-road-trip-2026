@@ -1,6 +1,6 @@
 {
   "trip_name": "KC → Detroit Disc Golf Leg (Sabbatical 2026)",
-  "description": "The ~7-day disc golf drive from Kansas City to the Detroit area for Worlds (spectating). Aug 17-25, 2026, in a camper. Stops are top courses in travel order; edit and re-run build_route.py to reroute.",
+  "description": "The ~9-day disc golf drive from Kansas City to the Detroit area for Worlds (spectating), Aug 17-31, 2026, in a truck camper. Drive east Aug 17-25 hitting top courses in travel order, then basecamp at Proud Lake Recreation Area Aug 25-31 while spectating Worlds. Stops are in travel order; edit and re-run build_route.py to reroute.",
   "stops": [
     {
       "name": "Kansas City, MO",
@@ -70,9 +70,17 @@
       "name": "Kensington Toboggan",
       "lat": 42.540607,
       "lon": -83.644784,
-      "type": "end",
+      "type": "course",
       "day": "8/25",
       "notes": "Milford Twp, MI · World #63 / US #40 / MI #2 · Worlds venue area — spectate 8/26-8/30"
+    },
+    {
+      "name": "Proud Lake Recreation Area — campsite (basecamp)",
+      "lat": 42.560008,
+      "lon": -83.529593,
+      "type": "end",
+      "day": "8/25-8/31",
+      "notes": "2928 Glengary Road, Commerce Twp, MI 48382 · Site 68 (Location 55-110) · 6 nights, truck camper · Worlds basecamp · Check in Tue 8/25 3:00 PM, check out Mon 8/31 1:00 PM · Reservation INMI26-3900592B1 · No sewer hookup · Recreation Passport required · (248)685-2433"
     }
   ]
 }

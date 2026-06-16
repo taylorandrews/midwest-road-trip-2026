@@ -54,13 +54,14 @@
       { "name": "Arvesta", "lat": 42.403087, "lon": -86.273641 },
       { "name": "Flip City", "lat": 43.608619, "lon": -86.363963, "play": true, "note": "Shelby, MI · MI #1" }
     ]},
-    { "date": "2026-08-25", "label": "Flip City → Kensington Toboggan", "waypoints": [
+    { "date": "2026-08-25", "label": "Flip City → Kensington Toboggan → Proud Lake camp", "waypoints": [
       { "name": "Flip City", "lat": 43.608619, "lon": -86.363963 },
-      { "name": "Kensington Toboggan", "lat": 42.540607, "lon": -83.644784, "play": true, "note": "Milford Twp, MI · Worlds venue · MI #2" }
+      { "name": "Kensington Toboggan", "lat": 42.540607, "lon": -83.644784, "play": true, "note": "Milford Twp, MI · Worlds venue · MI #2" },
+      { "name": "Proud Lake Rec Area (Site 68)", "lat": 42.560008, "lon": -83.529593, "note": "Commerce Twp, MI · 2928 Glengary Rd · Worlds basecamp, Aug 25–31 (6 nights) · conf INMI26-3900592B1" }
     ]},
 
-    { "date": "2026-08-31", "label": "Detroit → Iowa City", "waypoints": [
-      { "name": "Kensington Toboggan", "lat": 42.540607, "lon": -83.644784 },
+    { "date": "2026-08-31", "label": "Proud Lake → Iowa City", "waypoints": [
+      { "name": "Proud Lake Rec Area (Site 68)", "lat": 42.560008, "lon": -83.529593 },
       { "name": "Iowa City, IA", "lat": 41.661256, "lon": -91.529911 }
     ]},
     { "date": "2026-09-02", "label": "Iowa City → Nebraska (Kearney)", "waypoints": [
