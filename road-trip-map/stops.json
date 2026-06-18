@@ -1,6 +1,6 @@
 {
   "trip_name": "KC → Detroit Disc Golf Leg (Sabbatical 2026)",
-  "description": "The ~9-day disc golf drive from Kansas City to the Detroit area for Worlds (spectating), Aug 17-31, 2026, in a truck camper. Drive east Aug 17-25 hitting top courses in travel order, then basecamp at Proud Lake Recreation Area Aug 25-31 while spectating Worlds. Stops are in travel order; edit and re-run build_route.py to reroute.",
+  "description": "The ~9-day disc golf drive from Kansas City to the Detroit area for Worlds (spectating), Aug 17-31, 2026, in a truck camper. Drive east Aug 17-24 hitting top courses in travel order, then basecamp at Proud Lake Recreation Area Aug 24-31 while spectating Worlds. Stops are in travel order; edit and re-run build_route.py to reroute.",
   "stops": [
     {
       "name": "Kansas City, MO",
@@ -43,19 +43,19 @@
       "notes": "Burlington, KY (Cincinnati) · World #22 / US #11"
     },
     {
-      "name": "Lake Michigan camp — Valparaiso / Crown Point, IN",
+      "name": "Lake Michigan overnight — Valparaiso / Crown Point, IN",
       "lat": 41.467255,
       "lon": -87.060449,
       "type": "overnight",
-      "day": "8/21-8/22",
-      "notes": "2 nights by Lake Michigan (camper). Play Rogers Lakewood Park (IN #4, on a lake) and/or Lemon Lake County Park (IN #8). Indiana Dunes NP nearby for camping/beach."
+      "day": "8/21",
+      "notes": "Overnight in the camper en route from Cincinnati up to west Michigan."
     },
     {
       "name": "Arvesta Sport Complex",
       "lat": 42.403087,
       "lon": -86.273641,
       "type": "course",
-      "day": "8/23",
+      "day": "8/22",
       "notes": "South Haven, MI · World #78 / US #52 / MI #4 · up the lakeshore"
     },
     {
@@ -63,7 +63,7 @@
       "lat": 43.608619,
       "lon": -86.363963,
       "type": "course",
-      "day": "8/24",
+      "day": "8/23",
       "notes": "Shelby, MI · World #35 / US #20 / MI #1"
     },
     {
@@ -71,16 +71,16 @@
       "lat": 42.540607,
       "lon": -83.644784,
       "type": "course",
-      "day": "8/25",
-      "notes": "Milford Twp, MI · World #63 / US #40 / MI #2 · Worlds venue area — spectate 8/26-8/30"
+      "day": "8/24",
+      "notes": "Milford Twp, MI · World #63 / US #40 / MI #2 · Worlds venue area · round confirmed Mon 8/24 5:40 PM · spectate 8/26-8/30"
     },
     {
       "name": "Proud Lake Recreation Area — campsite (basecamp)",
       "lat": 42.560008,
       "lon": -83.529593,
       "type": "end",
-      "day": "8/25-8/31",
-      "notes": "2928 Glengary Road, Commerce Twp, MI 48382 · Site 68 (Location 55-110) · 6 nights, truck camper · Worlds basecamp · Check in Tue 8/25 3:00 PM, check out Mon 8/31 1:00 PM · Reservation INMI26-3900592B1 · No sewer hookup · Recreation Passport required · (248)685-2433"
+      "day": "8/24-8/31",
+      "notes": "2928 Glengary Road, Commerce Twp, MI 48382 · Site 68 (Location 55-110) · 7 nights, truck camper · Worlds basecamp · Check in Mon 8/24 3:00 PM, check out Mon 8/31 1:00 PM · Reservation INMI26-3900592B1 · No sewer hookup · Recreation Passport required · (248)685-2433"
     }
   ]
 }

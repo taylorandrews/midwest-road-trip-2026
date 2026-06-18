@@ -45,9 +45,9 @@ KC (start)  →  fly to Denver  →  Buena Vista (truck prep)
 
 ## Phase 2 — ★ KC → Detroit Disc Golf Leg (Aug 17–25) ★
 
-~1,254 driving miles, ~25 hr behind the wheel, 8 top courses + a Lake Michigan
-rest stop. Routed in `../road-trip-map/` (open `index.html`). Drive estimates
-are course-to-course.
+~1,254 driving miles, ~25 hr behind the wheel, 7 top courses, ending at the
+Worlds basecamp. Routed in `../road-trip-map/` (open `index.html`). Drive
+estimates are course-to-course.
 
 | Date | Drive | Course / stop | Rank | Sleep |
 |------|-------|---------------|------|-------|
@@ -55,18 +55,18 @@ are course-to-course.
 | **Tue 8/18** | 74 mi / 1.4 hr | **Eagles Crossing** (New Truxton, MO) — *play both: Championship + Wild Times* | 🌎9 · 🇺🇸4 · MO 1 | Near Warrenton / west of STL |
 | **Wed 8/19** | 311 mi / 6.3 hr ⟵ *long day* | **BC3** (Nashville, IN) | 🌎92 · 🇺🇸64 · IN 1 | Brown County area (state park camping) |
 | **Thu 8/20** | 110 mi / 2.5 hr | **Idlewild** (Burlington, KY / Cincinnati) | 🌎22 · 🇺🇸11 | Cincinnati area |
-| **Fri 8/21** | 260 mi / 5.1 hr ⟵ *long day* | Drive to **Lake Michigan** (Valparaiso / Crown Point, IN) | — | 🏕️ Camp — **night 1 of 2** |
-| **Sat 8/22** | local | **Lake Michigan day** — play Rogers Lakewood (IN 4) and/or Lemon Lake (IN 8); Indiana Dunes NP beach | IN 4 / IN 8 | 🏕️ Camp — **night 2** |
-| **Sun 8/23** | 88 mi / 1.7 hr | **Arvesta Sport Complex** (South Haven, MI) | 🌎78 · 🇺🇸52 · MI 4 | West MI lakeshore |
-| **Mon 8/24** | 95 mi / 1.9 hr | **Flip City** (Shelby, MI) | 🌎35 · 🇺🇸20 · MI 1 | West MI |
-| **Tue 8/25** | 198 mi / 3.9 hr | **Kensington Toboggan** (Milford Twp, MI) — then set up Worlds basecamp | 🌎63 · 🇺🇸40 · MI 2 | 🏕️ **Proud Lake Rec Area, Site 68** — check in after 3 PM |
+| **Fri 8/21** | 260 mi / 5.1 hr ⟵ *long day* | Drive up toward **west Michigan** — overnight near Lake Michigan (Valparaiso / Crown Point, IN) | — | 🏕️ Overnight en route |
+| **Sat 8/22** | 88 mi / 1.7 hr | **Arvesta Sport Complex** (South Haven, MI) | 🌎78 · 🇺🇸52 · MI 4 | West MI lakeshore |
+| **Sun 8/23** | 95 mi / 1.9 hr | **Flip City** (Shelby, MI) | 🌎35 · 🇺🇸20 · MI 1 | West MI |
+| **Mon 8/24** | 198 mi / 3.9 hr | **Kensington Toboggan** (Milford Twp, MI) — **5:40 PM tee (confirmed)**, then set up Worlds basecamp | 🌎63 · 🇺🇸40 · MI 2 | 🏕️ **Proud Lake Rec Area, Site 68** — check in after 3 PM |
+| **Tue 8/25** | — | Settle in at Proud Lake — Worlds prep (open day) | — | 🏕️ Proud Lake (basecamp) |
 
 **Notes & open items**
 - *Eagles Crossing* = one stop, two rounds (Championship Course #1 in MO, Wild
   Times #3 in MO).
-- *Lake Michigan camper spot:* deciding between Rogers Lakewood Park
-  (Valparaiso — has its own lake) and Lemon Lake County Park (Crown Point);
-  Indiana Dunes National Park is right on the big lake for a 2-night base.
+- *Dropped the Lake Michigan day* (Rogers Lakewood / Lemon Lake) to keep Mon 8/24
+  free for the Kensington Toboggan round — now just an overnight near Valparaiso /
+  Crown Point on the drive up. The basecamp picks up a 7th night (check in 8/24).
 - Two long driving days (8/19 and 8/21, both 5–6+ hr). Could break either with a
   bonus course — see the full dataset / `../course-map/` for options en route.
 
@@ -83,7 +83,8 @@ are course-to-course.
 | **Sun 8/30** | Worlds — Day 5 |
 
 > 🏕️ **Basecamp: Proud Lake Recreation Area, Site 68** (2928 Glengary Rd, Commerce Twp, MI 48382) —
-> booked Aug 25–31, 6 nights, conf INMI26-3900592B1. ~7 mi east of Kensington Toboggan.
+> booked Aug 24–31, 7 nights, conf INMI26-3900592B1. ~7 mi east of Kensington Toboggan.
+> Check in Mon 8/24 (after 3 PM), check out Mon 8/31 (by 1 PM).
 > No sewer hookup; Recreation Passport required for park entry.
 
 ---

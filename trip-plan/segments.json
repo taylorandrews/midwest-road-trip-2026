@@ -42,22 +42,22 @@
       { "name": "BC3", "lat": 39.207242, "lon": -86.246947 },
       { "name": "Idlewild", "lat": 39.041879, "lon": -84.733471, "play": true, "note": "Burlington, KY · World #22" }
     ]},
-    { "date": "2026-08-21", "label": "Idlewild → Lake Michigan", "waypoints": [
+    { "date": "2026-08-21", "label": "Idlewild → overnight near Lake Michigan", "waypoints": [
       { "name": "Idlewild", "lat": 39.041879, "lon": -84.733471 },
-      { "name": "Lake Michigan camp", "lat": 41.467255, "lon": -87.060449, "play": true, "note": "Valparaiso / Crown Point, IN · 2-night camp" }
+      { "name": "Lake Michigan overnight", "lat": 41.467255, "lon": -87.060449, "note": "Valparaiso / Crown Point, IN · overnight en route up to west MI" }
     ]},
-    { "date": "2026-08-23", "label": "Lake Michigan → Arvesta", "waypoints": [
-      { "name": "Lake Michigan camp", "lat": 41.467255, "lon": -87.060449 },
+    { "date": "2026-08-22", "label": "Drive up to Arvesta", "waypoints": [
+      { "name": "Lake Michigan overnight", "lat": 41.467255, "lon": -87.060449 },
       { "name": "Arvesta", "lat": 42.403087, "lon": -86.273641, "play": true, "note": "South Haven, MI · MI #4" }
     ]},
-    { "date": "2026-08-24", "label": "Arvesta → Flip City", "waypoints": [
+    { "date": "2026-08-23", "label": "Arvesta → Flip City", "waypoints": [
       { "name": "Arvesta", "lat": 42.403087, "lon": -86.273641 },
       { "name": "Flip City", "lat": 43.608619, "lon": -86.363963, "play": true, "note": "Shelby, MI · MI #1" }
     ]},
-    { "date": "2026-08-25", "label": "Flip City → Kensington Toboggan → Proud Lake camp", "waypoints": [
+    { "date": "2026-08-24", "label": "Flip City → Kensington Toboggan (5:40 PM) → Proud Lake camp", "waypoints": [
       { "name": "Flip City", "lat": 43.608619, "lon": -86.363963 },
-      { "name": "Kensington Toboggan", "lat": 42.540607, "lon": -83.644784, "play": true, "note": "Milford Twp, MI · Worlds venue · MI #2" },
-      { "name": "Proud Lake Rec Area (Site 68)", "lat": 42.560008, "lon": -83.529593, "note": "Commerce Twp, MI · 2928 Glengary Rd · Worlds basecamp, Aug 25–31 (6 nights) · conf INMI26-3900592B1" }
+      { "name": "Kensington Toboggan", "lat": 42.540607, "lon": -83.644784, "play": true, "note": "Milford Twp, MI · Worlds venue · MI #2 · 5:40 PM tee" },
+      { "name": "Proud Lake Rec Area (Site 68)", "lat": 42.560008, "lon": -83.529593, "note": "Commerce Twp, MI · 2928 Glengary Rd · Worlds basecamp, Aug 24–31 (7 nights) · conf INMI26-3900592B1" }
     ]},
 
     { "date": "2026-08-31", "label": "Proud Lake → Iowa City", "waypoints": [

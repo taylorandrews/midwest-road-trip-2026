@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <gpx version="1.1" creator="road-trip-map" xmlns="http://www.topografix.com/GPX/1/1">
-  <metadata><time>2026-06-14T21:28:08Z</time></metadata>
+  <metadata><time>2026-06-18T22:14:20Z</time></metadata>
   <wpt lat="39.0997" lon="-94.5786">
     <name>Kansas City, MO</name>
     <type>start</type>
@@ -22,7 +22,7 @@
     <type>course</type>
   </wpt>
   <wpt lat="41.467255" lon="-87.060449">
-    <name>Lake Michigan camp — Valparaiso / Crown Point, IN</name>
+    <name>Lake Michigan overnight — Valparaiso / Crown Point, IN</name>
     <type>overnight</type>
   </wpt>
   <wpt lat="42.403087" lon="-86.273641">
