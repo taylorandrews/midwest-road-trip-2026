@@ -26,16 +26,11 @@
 
     main { max-width: 860px; margin: 0 auto; padding: 18px 16px 80px; }
 
-    /* pre-trip checklist */
+    /* before-you-go free-text note */
     .primary { background: var(--card); border: 1px solid var(--line);
       border-left: 5px solid var(--gold); border-radius: 12px; padding: 14px 16px; margin-bottom: 16px; }
     .primary h2 { margin: 0 0 4px; font-size: 14px; }
     .primary .sub { color: var(--muted); font-size: 12.5px; margin-bottom: 10px; }
-    .checks { display: grid; gap: 6px; }
-    .chk { display: flex; align-items: center; gap: 8px; font-size: 13.5px;
-      background: #0e121b; border: 1px solid var(--line); border-radius: 7px; padding: 7px 9px; cursor: pointer; }
-    .chk input { width: 16px; height: 16px; accent-color: var(--ok); cursor: pointer; }
-    .chk.done { border-color: var(--ok); color: var(--ok); }
 
     /* trip summary line */
     .tripinfo { background: var(--card); border: 1px dashed var(--line); border-radius: 12px;
@@ -51,24 +46,21 @@
     /* day cards */
     .day { background: var(--card); border: 1px solid var(--line);
       border-left: 4px solid var(--line); border-radius: 12px; margin-bottom: 10px; overflow: hidden; }
-    .day-head { padding: 11px 14px; display: flex; align-items: baseline; gap: 9px; flex-wrap: wrap;
+    .day-head { padding: 11px 14px; display: flex; align-items: baseline; gap: 9px 12px; flex-wrap: wrap;
       border-bottom: 1px solid var(--line); }
-    .day-head .date { font-weight: 700; font-size: 14px; }
-    .day-head .ttl { color: var(--ink); }
+    .day-head .date { font-weight: 700; font-size: 14px; white-space: nowrap; }
+    .day-head .ttl { color: var(--ink); font-weight: 600; flex: 1 1 auto; min-width: 0; }
     .day-head .drive { margin-left: auto; font-size: 12px; color: var(--gold); white-space: nowrap; }
     .day-body { padding: 10px 14px 14px; display: flex; flex-direction: column; gap: 8px; }
-
-    .locked { background: rgba(40,224,200,.10); border: 1px solid rgba(40,224,200,.35);
-      color: var(--ok); border-radius: 8px; padding: 6px 10px; font-size: 13px; }
-    .stay-idea { font-size: 12.5px; color: var(--muted); }
-    .stay-idea b { color: #b0bac8; }
 
     /* section label within a day */
     .section-label { font-size: 11px; text-transform: uppercase; letter-spacing: .6px;
       color: var(--muted); margin: 4px 0 4px; }
 
+    /* shared inner card (disc golf + stay) */
+    .block { background: #0e121b; border-radius: 9px; padding: 10px 12px; }
+
     /* disc golf block */
-    .dg-block { background: #0e121b; border-radius: 9px; padding: 10px 12px; }
     .dg-course + .dg-course { margin-top: 9px; padding-top: 9px; border-top: 1px solid var(--line); }
     .dg-name { font-size: 14.5px; font-weight: 700; display: flex; align-items: center; flex-wrap: wrap; gap: 6px; }
     .dg-name a { color: var(--ink); text-decoration: none; }
@@ -79,12 +71,36 @@
     .dg-udisc:hover { background: rgba(40,224,200,.22); }
     .dg-ranks { font-size: 12.5px; color: var(--muted); margin-top: 2px; }
 
+    /* stay block */
+    .stay-name { font-size: 14px; font-weight: 700; display: flex; align-items: center; flex-wrap: wrap; gap: 7px; }
+    .stay-name a { color: var(--ink); text-decoration: none; }
+    .stay-name a:hover { color: var(--ok); }
+    .stay-where { font-size: 12.5px; color: var(--muted); margin-top: 2px; }
+    .stay-site { font-size: 11.5px; font-weight: 700; color: var(--gold);
+      background: rgba(217,164,65,.14); border: 1px solid rgba(217,164,65,.4);
+      border-radius: 5px; padding: 1px 8px; }
+    .block.idea { background: transparent; border: 1px dashed var(--line); }
+    .block.idea .stay-where { color: var(--muted); margin: 0; }
+
     textarea {
       background: transparent; color: var(--ink); border: 1px solid var(--line);
       border-radius: 6px; padding: 6px 8px; font: inherit; font-size: 13.5px; width: 100%;
       min-height: 40px; resize: vertical; outline: none; }
+    .summary-box { min-height: 84px; }
     textarea:focus { border-color: var(--ok); }
     input::placeholder, textarea::placeholder { color: #4a5168; }
+
+    @media (max-width: 600px) {
+      main { padding: 14px 12px 60px; }
+      header { padding: 9px 14px; gap: 10px; }
+      header h1 { font-size: 15px; }
+      .day-head { padding: 10px 12px; }
+      .day-head .date { font-size: 13.5px; }
+      .day-head .drive { margin-left: 0; flex-basis: 100%; }
+      .day-body { padding: 9px 12px 12px; }
+      .block { padding: 9px 11px; }
+      .stay-where { word-break: break-word; }
+    }
 
     @media print {
       header { position: static; } .tools, .nav, .btn { display: none !important; }
@@ -115,47 +131,9 @@
     const get = (d,f) => (store[d]||{})[f];
     const set = (d,f,v) => { (store[d] = store[d]||{})[f]=v; save(); };
 
-    const PROUD_LAKE_SUMMARY =
-      "🏕️ Proud Lake Rec Area — Site 68 (loc 55-110), 2928 Glengary Rd, Commerce Twp, MI 48382. " +
-      "Booked Aug 24–31, 7 nights · conf INMI26-3900592B1. " +
-      "Check in Mon 8/24 3 PM, check out Mon 8/31 1 PM. Truck camper, no sewer hookup. " +
-      "Recreation Passport required. (248)685-2433.";
     const DEFAULTS = {
-      "2026-08-08": { "summary": "Parents' camper — 1875 Glen Gyle Dr, Buena Vista." },
-      "2026-08-24": { "summary": PROUD_LAKE_SUMMARY },
-      "2026-08-25": { "summary": PROUD_LAKE_SUMMARY },
-      "2026-08-26": { "summary": PROUD_LAKE_SUMMARY },
-      "2026-08-27": { "summary": PROUD_LAKE_SUMMARY },
-      "2026-08-28": { "summary": PROUD_LAKE_SUMMARY },
-      "2026-08-29": { "summary": PROUD_LAKE_SUMMARY },
-      "2026-08-30": { "summary": PROUD_LAKE_SUMMARY }
+      "prep": { "notes": "Most prep is done and the leg to Proud Lake is booked. Main thing left: plan the post-Worlds drive back — Detroit → Iowa City → Nebraska → BV → fly KC (Aug 31–Sep 4). Nothing booked on the way home yet." }
     };
-    // One-time migration: the per-day Lodging fields (name/address/notes) were
-    // replaced by a single free-text "summary". Fold any saved lodging into it.
-    if (!store.__summary_v1) {
-      const STALE = "Worlds tickets confirmed (Aug 26–30). Still need a place to stay near Milford.";
-      Object.values(store).forEach(r => {
-        if (!r || typeof r !== "object") return;
-        if (r.summary === undefined) {
-          const notes = r["lodge.notes"] === STALE ? "" : (r["lodge.notes"] || "");
-          const parts = [r["lodge.name"], r["lodge.address"], notes].filter(Boolean);
-          if (parts.length) r.summary = parts.join(" — ");
-        }
-        delete r["lodge.name"]; delete r["lodge.address"]; delete r["lodge.notes"];
-      });
-      store.__summary_v1 = true; save();
-    }
-    // v2: the per-day disc-golf note box was removed — fold any saved dg.note
-    // into the day summary so nothing typed there is lost.
-    if (!store.__summary_v2) {
-      Object.values(store).forEach(r => {
-        if (!r || typeof r !== "object") return;
-        const note = r["dg.note"];
-        if (note) r.summary = r.summary ? `${r.summary}\n${note}` : note;
-        delete r["dg.note"];
-      });
-      store.__summary_v2 = true; save();
-    }
     Object.entries(DEFAULTS).forEach(([d,fields]) => {
       Object.entries(fields).forEach(([f,v]) => {
         if (get(d,f) === undefined) set(d,f,v);
@@ -167,36 +145,11 @@
     const pd = s => { const [y,m,d]=s.split("-").map(Number); return new Date(y,m-1,d); };
     const esc = s => (s||"").replace(/&/g,"&amp;").replace(/</g,"&lt;").replace(/>/g,"&gt;").replace(/"/g,"&quot;");
 
-    const STAY_IDEAS = {
-      "2026-08-08": "Parents' camper — 1875 Glen Gyle Dr, Buena Vista.",
-      "2026-08-09": "At parents' in BV.",
-      "2026-08-10": "Near Elizabeth/Franktown: Castlewood Canyon SP (~8 mi north of Elizabeth, ~$28, reservable); or Pike NF dispersed along Rampart Range Rd (~25 mi west).",
-      "2026-08-11": "Council Grove Lake COE (~35 mi NE of Emporia, right on the route) — Santa Fe Trail or Canning Creek campground, ~$18–22/night, reserve at Recreation.gov. Gets you 35 min from Jones Park for the morning round.",
-      "2026-08-12": "Home — KC.", "2026-08-13": "Home — KC.",
-      "2026-08-17": "Finger Lakes State Park (Columbia); Mark Twain NF to the south; COE Mark Twain Lake to the NE.",
-      "2026-08-18": "Cuivre River State Park (Troy, MO); or paid near Warrenton.",
-      "2026-08-19": "Brown County State Park (paid, classic) or Hoosier NF / Charles Deam dispersed.",
-      "2026-08-20": "Big Bone Lick State Park is minutes away (Union, KY); or Cincinnati-area paid.",
-      "2026-08-21": "Overnight near Valparaiso / Crown Point, IN en route up to west MI (no rounds — just a sleep stop). Indiana Dunes NP / State Park if you want the lake.",
-      "2026-08-22": "Van Buren State Park (South Haven, on the lake); MI state forest campgrounds.",
-      "2026-08-23": "Silver Lake State Park (Mears) near Shelby; Manistee NF dispersed.",
-      "2026-08-24": "✅ Booked: Proud Lake Rec Area, Site 68 — 2928 Glengary Rd, Commerce Twp. Check in after 3 PM (self check-in pilot, online after 11 AM).",
-      "2026-08-25": "Proud Lake Rec Area, Site 68 (basecamp — already checked in).",
-      "2026-08-26": "✅ Proud Lake Rec Area, Site 68 — Worlds basecamp through 8/31. No sewer hookup; Recreation Passport required for entry.",
-      "2026-08-27": "✅ Proud Lake basecamp (Site 68).", "2026-08-28": "✅ Proud Lake basecamp (Site 68).",
-      "2026-08-29": "✅ Proud Lake basecamp (Site 68).", "2026-08-30": "✅ Proud Lake basecamp (Site 68) — last night; check out by 1 PM tomorrow.",
-      "2026-08-31": "COE Coralville Lake campgrounds near Iowa City.",
-      "2026-09-01": "Iowa City — COE Coralville Lake, or city/county park.",
-      "2026-09-02": "Fort Kearny State Rec Area (Kearney); Nebraska SRAs along I-80.",
-      "2026-09-03": "Pike/San Isabel NF dispersed near BV.",
-      "2026-09-04": "KC.", "2026-09-05": "KC.", "2026-09-06": "KC.", "2026-09-07": "KC."
-    };
-
     let SCHEDULE, DRIVE = {};
 
     Promise.all([
-      fetch("../trip-plan/schedule.json?v=4").then(r=>r.json()),
-      fetch("../trip-plan/route_segments.geojson?v=4").then(r=>r.json()),
+      fetch("../trip-plan/schedule.json?v=6").then(r=>r.json()),
+      fetch("../trip-plan/route_segments.geojson?v=6").then(r=>r.json()),
     ]).then(([schedule, geo]) => {
       SCHEDULE = schedule;
       geo.features.filter(f=>f.properties.kind==="drive").forEach(f=>DRIVE[f.properties.date]=f.properties);
@@ -213,21 +166,9 @@
     });
 
     function primaryBlock() {
-      const d = "prep";
-      const chk = (field, label) =>
-        `<label class="chk"><input type="checkbox" data-day="${d}" data-field="${field}"> <span>${label}</span></label>`;
       return `<h2>Before you go</h2>
-        <div class="sub">Trip-wide prep &amp; gear.</div>
-        <div class="checks">
-          ${chk("rig","Camper/truck serviced — tires, fluids, propane, water tanks, battery")}
-          ${chk("atb","America the Beautiful pass (NF / federal access &amp; discounts)")}
-          ${chk("recgov","Recreation.gov account (book federal campgrounds)")}
-          ${chk("apps","Camping apps: iOverlander, Campendium, The Dyrt, FreeRoam")}
-          ${chk("udisc","UDisc Pro for course info / scorecards / directions")}
-          ${chk("worldsstay","🏕️ Worlds-week lodging booked — Proud Lake Rec Area, Site 68 (Aug 24–31, conf INMI26-3900592B1)")}
-          ${chk("offline","Offline maps for low-signal stretches")}
-          ${chk("gear","Discs, cart, rain gear, bug spray, water filter")}
-        </div>`;
+        <div class="sub">Free notes — what's still open before the trip.</div>
+        <textarea rows="3" data-day="prep" data-field="notes" placeholder="What's left to sort out before heading out…"></textarea>`;
     }
 
     function tripInfoLine(schedule) {
@@ -256,45 +197,69 @@
       }).join("");
     }
 
+    function courseHtml(day) {
+      const courses = [day.course, day.course2].filter(c => c && c.name && c.name !== "(travel day)");
+      if (!courses.length) return "";
+      const inner = courses.map(c => {
+        const nameHtml = c.udisc_url
+          ? `<a href="${esc(c.udisc_url)}" target="_blank" rel="noopener">${esc(c.name)}</a>`
+          : esc(c.name);
+        const udiscLink = c.udisc_url
+          ? `<a class="dg-udisc" href="${esc(c.udisc_url)}" target="_blank" rel="noopener">UDisc ↗</a>`
+          : "";
+        return `<div class="dg-course">
+          <div class="dg-name">${nameHtml}${udiscLink}</div>
+          ${c.ranks ? `<div class="dg-ranks">${esc(c.ranks)}</div>` : ""}
+        </div>`;
+      }).join("");
+      return `<div>
+        <div class="section-label">Disc Golf</div>
+        <div class="block">${inner}</div>
+      </div>`;
+    }
+
+    function stayHtml(day) {
+      const s = day.stay;
+      if (!s) return "";
+      if (s.status === "idea") {
+        return `<div>
+          <div class="section-label">Stay</div>
+          <div class="block idea"><div class="stay-where">💡 ${esc(s.note || s.where || "")}</div></div>
+        </div>`;
+      }
+      const site = s.site ? `<span class="stay-site">${esc(s.site)}</span>` : "";
+      const mapUrl = (s.lat != null && s.lon != null)
+        ? `https://www.google.com/maps/search/?api=1&query=${s.lat},${s.lon}` : "";
+      const nameHtml = mapUrl
+        ? `<a href="${mapUrl}" target="_blank" rel="noopener">${esc(s.name)}</a>`
+        : esc(s.name);
+      return `<div>
+        <div class="section-label">Stay</div>
+        <div class="block">
+          <div class="stay-name">🏕️ ${nameHtml}${site}</div>
+          ${s.where ? `<div class="stay-where">${esc(s.where)}</div>` : ""}
+        </div>
+      </div>`;
+    }
+
     function dayHtml(day, ph) {
       const d = pd(day.date), dk = day.date, drv = DRIVE[dk];
-      const locked = (day.locked||[]).length
-        ? `<div class="locked">🔒 ${day.locked.map(esc).join(" · ")}</div>` : "";
-      const idea = STAY_IDEAS[dk]
-        ? `<div class="stay-idea">🏕 <b>Ideas:</b> ${esc(STAY_IDEAS[dk])}</div>` : "";
+      const headline = esc(day.location || day.title);
       const driveStr = drv ? `🚗 ${drv.miles} mi / ${drv.hours} hr` : "";
-
-      let dgBlock = "";
-      const courses = [day.course, day.course2].filter(c => c && c.name && c.name !== "(travel day)");
-      if (courses.length) {
-        const courseHtml = courses.map(c => {
-          const nameHtml = c.udisc_url
-            ? `<a href="${esc(c.udisc_url)}" target="_blank" rel="noopener">${esc(c.name)}</a>`
-            : esc(c.name);
-          const udiscLink = c.udisc_url
-            ? `<a class="dg-udisc" href="${esc(c.udisc_url)}" target="_blank" rel="noopener">UDisc ↗</a>`
-            : "";
-          return `<div class="dg-course">
-            <div class="dg-name">${nameHtml}${udiscLink}</div>
-            ${c.ranks ? `<div class="dg-ranks">${esc(c.ranks)}</div>` : ""}
-          </div>`;
-        }).join("");
-        dgBlock = `<div class="dg-block">${courseHtml}</div>`;
-      }
 
       const summaryBlock = `<div>
         <div class="section-label">Day summary</div>
-        <textarea data-day="${dk}" data-field="summary" placeholder="Anything about the day — lodging, food, logistics, notes…"></textarea>
+        <textarea class="summary-box" rows="4" data-day="${dk}" data-field="summary" placeholder="Anything about the day — food, logistics, notes…"></textarea>
       </div>`;
 
       return `<div class="day" style="border-left-color:${ph.color}">
         <div class="day-head">
           <span class="date">${WD[d.getDay()]} ${MON[d.getMonth()]} ${d.getDate()}</span>
-          <span class="ttl">${esc(day.title)}</span>
+          <span class="ttl">${headline}</span>
           ${driveStr ? `<span class="drive">${driveStr}</span>` : ""}
         </div>
         <div class="day-body">
-          ${locked}${idea}${summaryBlock}${dgBlock}
+          ${summaryBlock}${courseHtml(day)}${stayHtml(day)}
         </div>
       </div>`;
     }

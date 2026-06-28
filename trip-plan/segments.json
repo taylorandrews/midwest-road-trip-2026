@@ -1,5 +1,5 @@
 {
-  "description": "Per-day driving segments for the trip. Each segment is the drive on a given date, routed through its waypoints. play:true waypoints are courses (basket markers); others are cities/overnights. Run build_segments.py to produce route_segments.geojson.",
+  "description": "Per-day driving segments for the trip. Each segment is the drive on a given date, routed through its waypoints. play:true waypoints are courses (basket markers); camp:true are booked campgrounds (tent markers); others are cities/overnights. Run build_segments.py to produce route_segments.geojson.",
   "segments": [
     { "date": "2026-08-09", "label": "Heart of the Rockies day trip (Salida)", "waypoints": [
       { "name": "Buena Vista, CO", "lat": 38.842218, "lon": -106.131129 },
@@ -26,42 +26,49 @@
       { "name": "Kansas City, MO", "lat": 39.0997, "lon": -94.5786 }
     ]},
 
-    { "date": "2026-08-17", "label": "KC → Harmony Bends", "waypoints": [
+    { "date": "2026-08-17", "label": "KC → Harmony Bends → Finger Lakes SP", "waypoints": [
       { "name": "Kansas City, MO", "lat": 39.0997, "lon": -94.5786 },
-      { "name": "Harmony Bends", "lat": 38.951883, "lon": -92.333737, "play": true, "note": "Columbia, MO · World #25" }
+      { "name": "Harmony Bends", "lat": 38.951883, "lon": -92.333737, "play": true, "note": "Columbia, MO · World #25" },
+      { "name": "Finger Lakes SP", "lat": 38.9933, "lon": -92.2369, "camp": true, "note": "Columbia, MO · Site 17 · conf 3828322" }
     ]},
-    { "date": "2026-08-18", "label": "Harmony Bends → Eagles Crossing", "waypoints": [
-      { "name": "Harmony Bends", "lat": 38.951883, "lon": -92.333737 },
-      { "name": "Eagles Crossing", "lat": 38.978376, "lon": -91.23793, "play": true, "note": "New Truxton, MO · World #9 · play both courses" }
+    { "date": "2026-08-18", "label": "Finger Lakes → Eagles Crossing (noon tee) → Walnut Point SP", "waypoints": [
+      { "name": "Finger Lakes SP", "lat": 38.9933, "lon": -92.2369 },
+      { "name": "Eagles Crossing", "lat": 38.978376, "lon": -91.23793, "play": true, "note": "New Truxton, MO · World #9 · 12 PM tee · play both courses" },
+      { "name": "Walnut Point SP", "lat": 39.6361, "lon": -88.0381, "camp": true, "note": "Oakland, IL · Fox Squirrel Site 1 · conf 68096" }
     ]},
-    { "date": "2026-08-19", "label": "Eagles Crossing → BC3", "waypoints": [
-      { "name": "Eagles Crossing", "lat": 38.978376, "lon": -91.23793 },
-      { "name": "BC3", "lat": 39.207242, "lon": -86.246947, "play": true, "note": "Nashville, IN · IN #1" }
+    { "date": "2026-08-19", "label": "Walnut Point → BC3 → Versailles SP", "waypoints": [
+      { "name": "Walnut Point SP", "lat": 39.6361, "lon": -88.0381 },
+      { "name": "BC3", "lat": 39.207242, "lon": -86.246947, "play": true, "note": "Nashville, IN · IN #1" },
+      { "name": "Versailles SP", "lat": 39.0739, "lon": -85.2336, "camp": true, "note": "Versailles, IN · Loop B Site 120 · conf 2-39907318" }
     ]},
-    { "date": "2026-08-20", "label": "BC3 → Idlewild", "waypoints": [
-      { "name": "BC3", "lat": 39.207242, "lon": -86.246947 },
-      { "name": "Idlewild", "lat": 39.041879, "lon": -84.733471, "play": true, "note": "Burlington, KY · World #22" }
+    { "date": "2026-08-20", "label": "Versailles → Idlewild → Indiana Dunes SP", "waypoints": [
+      { "name": "Versailles SP", "lat": 39.0739, "lon": -85.2336 },
+      { "name": "Idlewild", "lat": 39.041879, "lon": -84.733471, "play": true, "note": "Burlington, KY · World #22 · Reds game in the evening" },
+      { "name": "Indiana Dunes SP", "lat": 41.6606, "lon": -87.0526, "camp": true, "note": "Chesterton, IN · Site 8 · conf 2-39907952" }
     ]},
-    { "date": "2026-08-21", "label": "Idlewild → overnight near Lake Michigan", "waypoints": [
-      { "name": "Idlewild", "lat": 39.041879, "lon": -84.733471 },
-      { "name": "Lake Michigan overnight", "lat": 41.467255, "lon": -87.060449, "note": "Valparaiso / Crown Point, IN · overnight en route up to west MI" }
+    { "date": "2026-08-21", "label": "Indiana Dunes → Rogers Lakewood → Van Buren SP", "waypoints": [
+      { "name": "Indiana Dunes SP", "lat": 41.6606, "lon": -87.0526 },
+      { "name": "Rogers Lakewood Park", "lat": 41.4886, "lon": -87.0467, "play": true, "note": "Valparaiso, IN · IN #5" },
+      { "name": "Van Buren SP", "lat": 42.3489, "lon": -86.3036, "camp": true, "note": "South Haven, MI · Site 209 · conf INMI26-4385520B1" }
     ]},
-    { "date": "2026-08-22", "label": "Drive up to Arvesta", "waypoints": [
-      { "name": "Lake Michigan overnight", "lat": 41.467255, "lon": -87.060449 },
-      { "name": "Arvesta", "lat": 42.403087, "lon": -86.273641, "play": true, "note": "South Haven, MI · MI #4" }
+    { "date": "2026-08-22", "label": "Van Buren → Arvesta → Holland SP", "waypoints": [
+      { "name": "Van Buren SP", "lat": 42.3489, "lon": -86.3036 },
+      { "name": "Arvesta", "lat": 42.403087, "lon": -86.273641, "play": true, "note": "South Haven, MI · MI #4" },
+      { "name": "Holland SP", "lat": 42.7772, "lon": -86.2042, "camp": true, "note": "Holland, MI · Site 129 · 2 nights · conf INMI26-4385155B1" }
     ]},
-    { "date": "2026-08-23", "label": "Arvesta → Flip City", "waypoints": [
-      { "name": "Arvesta", "lat": 42.403087, "lon": -86.273641 },
-      { "name": "Flip City", "lat": 43.608619, "lon": -86.363963, "play": true, "note": "Shelby, MI · MI #1" }
+    { "date": "2026-08-23", "label": "Holland → Flip City → Holland (day trip)", "waypoints": [
+      { "name": "Holland SP", "lat": 42.7772, "lon": -86.2042 },
+      { "name": "Flip City", "lat": 43.608619, "lon": -86.363963, "play": true, "note": "Shelby, MI · MI #1" },
+      { "name": "Holland SP", "lat": 42.7772, "lon": -86.2042, "camp": true, "note": "Holland, MI · Site 129" }
     ]},
-    { "date": "2026-08-24", "label": "Flip City → Kensington Toboggan (5:40 PM) → Proud Lake camp", "waypoints": [
-      { "name": "Flip City", "lat": 43.608619, "lon": -86.363963 },
+    { "date": "2026-08-24", "label": "Holland → Kensington Toboggan (5:40 PM) → Proud Lake", "waypoints": [
+      { "name": "Holland SP", "lat": 42.7772, "lon": -86.2042 },
       { "name": "Kensington Toboggan", "lat": 42.540607, "lon": -83.644784, "play": true, "note": "Milford Twp, MI · Worlds venue · MI #2 · 5:40 PM tee" },
-      { "name": "Proud Lake Rec Area (Site 68)", "lat": 42.560008, "lon": -83.529593, "note": "Commerce Twp, MI · 2928 Glengary Rd · Worlds basecamp, Aug 24–31 (7 nights) · conf INMI26-3900592B1" }
+      { "name": "Proud Lake", "lat": 42.560008, "lon": -83.529593, "camp": true, "note": "Commerce Twp, MI · Site 68 · Worlds basecamp, Aug 24–31 · conf INMI26-3900592B1" }
     ]},
 
     { "date": "2026-08-31", "label": "Proud Lake → Iowa City", "waypoints": [
-      { "name": "Proud Lake Rec Area (Site 68)", "lat": 42.560008, "lon": -83.529593 },
+      { "name": "Proud Lake", "lat": 42.560008, "lon": -83.529593 },
       { "name": "Iowa City, IA", "lat": 41.661256, "lon": -91.529911 }
     ]},
     { "date": "2026-09-02", "label": "Iowa City → Nebraska (Kearney)", "waypoints": [

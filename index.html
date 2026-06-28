@@ -112,6 +112,14 @@
           <line x1="12" y1="14.7" x2="12" y2="22"/><line x1="9" y1="22" x2="15" y2="22"/></svg>` });
     }
 
+    function campIcon(color) {
+      const s = 22;
+      return L.divIcon({ className: "basket", iconSize: [s,s], iconAnchor: [s/2,s],
+        html: `<svg width="${s}" height="${s}" viewBox="0 0 24 24" fill="none" stroke="${color}" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round">
+          <path d="M12 3 L3 21 H21 Z" fill="${color}" fill-opacity="0.25"/>
+          <line x1="12" y1="3" x2="12" y2="21"/></svg>` });
+    }
+
     const driveByDate = {};   // date -> {layer, bounds}
     const cellByDate = {};    // date -> calendar cell element
 
@@ -149,6 +157,9 @@
         if (p.play) {
           L.marker([la,lo], { icon: basketIcon(css("--route")) }).addTo(map)
             .bindTooltip(`<span class="nm">🥏 ${p.name}</span>` + (p.note?`<br><span class="nt">${p.note}</span>`:""), { className:"course", direction:"top", offset:[0,-20] });
+        } else if (p.camp) {
+          L.marker([la,lo], { icon: campIcon("#ffc24b") }).addTo(map)
+            .bindTooltip(`<span class="nm">🏕️ ${p.name}</span>` + (p.note?`<br><span class="nt">${p.note}</span>`:""), { className:"course", direction:"top", offset:[0,-18] });
         } else {
           L.circleMarker([la,lo], { radius: 4, color:"#fff", weight:1.5, fillColor:"#8a93a8", fillOpacity:1 }).addTo(map)
             .bindTooltip(p.name, { permanent:true, direction:"right", className:"place-label", offset:[6,0] });
@@ -158,7 +169,8 @@
 
       // ---- legend ----
       document.getElementById("legend").innerHTML = Object.values(phases)
-        .map(p => `<div class="row"><span class="dot" style="background:${p.color}"></span>${p.label}</div>`).join("");
+        .map(p => `<div class="row"><span class="dot" style="background:${p.color}"></span>${p.label}</div>`).join("")
+        + `<div class="row">🥏 course</div><div class="row">🏕️ booked campsite</div>`;
 
       // ---- calendar: Monday-start weeks, trip days only, no month break ----
       document.getElementById("weekhdr").innerHTML = WD_MON.map(w=>`<div>${w}</div>`).join("");
