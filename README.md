@@ -11,37 +11,31 @@ Colorado → Kansas → Missouri → Illinois → Indiana → Detroit, MI
 Two threads: **trip logistics** (mapping the route + stops) and a **digital-art
 visual** built from the route and disc golf course data.
 
-## The site
+## The trip guide
 
-Everything served lives in **`site/`** as one self-contained bundle (so the
-whole folder copies into the portal as a unit). Two surfaces, one data source:
+The phone-facing guide lives in **`site/`** as one self-contained bundle (the
+whole folder copies into the portal as a unit). `site/index.html` is the
+mobile-first guide: a Schedule tab (each day: route, courses, where you sleep
+with a 📍 Directions link, tee times) and a Map tab (drive lines, course baskets,
+campsite tents). It reads one data source, `site/data/`.
 
-- **`site/index.html`** — the **mobile-first trip guide** (portal entry). A
-  Schedule tab (each day: route, courses, where you sleep with a 📍 Directions
-  link, tee times) and a Map tab (drive lines, course baskets, campsite tents).
-- **`site/plan.html`** — the **laptop planning page**. Read-only established info
-  per day plus a notes box. Notes **autosave to `site/data/planning-notes.json`**
-  so they live in the repo (Claude reads them and folds the durable bits into
-  `schedule.json`). Autosave needs the local server below.
-
-**To plan: double-click `plan.command`** (or run `python3 serve.py`). It starts
-the local server and opens the planning page in your browser. Leave it running
-while you plan; Ctrl+C to stop. The portal hosts `site/` statically — this
-write-back server only runs on the laptop, which is where planning happens.
+To view it locally (the guide uses `fetch`, so it needs a static server, not
+`file://`):
 
 ```bash
-python3 serve.py            # opens http://localhost:8000/plan.html (planning)
-                            #        http://localhost:8000/         (trip guide)
+cd site && python3 -m http.server 8000   # then open http://localhost:8000/
 ```
 
-## The workflow
+## The planning workflow
 
-1. **Plan on the laptop** — double-click `plan.command`, type free-form ideas
-   into the scratchpad / per-day boxes. Everything autosaves to
-   `site/data/planning-notes.json`.
+Free-form notes live in **`PLANNING.md`** (repo root) — a plain text file. There
+is no app or server for planning; it's just a file.
+
+1. **Plan in your editor** — open `PLANNING.md`, type anything (ideas, to-dos,
+   per-day notes). Save. It's version-controlled, so nothing gets lost.
 2. **Hand Claude the rest in the terminal** — paste emails/screenshots and say
-   "fold in my planning notes." Claude reads `planning-notes.json` + your
-   materials and promotes the settled stuff into `site/data/schedule.json`.
+   "fold in my planning notes." Claude reads `PLANNING.md` + your materials and
+   promotes the settled stuff into `site/data/schedule.json`.
 3. **See it on your phone** — the guide renders the current trip from that one
    data source. No copies, never stale.
 
@@ -52,7 +46,6 @@ site/data/
 ├── schedule.json          # the trip: days, route, courses, stays, tee times (Claude maintains)
 ├── segments.json          # per-day driving waypoints (courses + booked campgrounds)
 ├── route_segments.geojson # generated — drive geometry + markers (build_routes.py)
-├── planning-notes.json    # YOUR typed notes (written by serve.py, read by Claude)
 └── itinerary.md           # human-readable itinerary
 ```
 
@@ -69,10 +62,9 @@ python3 site/data/build_routes.py
 sabbatical/
 ├── site/                 # The web bundle (served + shipped to the portal)
 │   ├── index.html        # Mobile-first trip guide
-│   ├── plan.html         # Laptop planning page (autosaves notes)
 │   ├── leaflet.css/.js   # bundled map lib (offline-friendly)
 │   └── data/             # source of truth (see above)
-├── serve.py              # dev server: serves site/ + notes write-back
+├── PLANNING.md           # free-form planning scratchpad (you type, Claude reads)
 ├── portal.json           # portal manifest → site/index.html
 ├── course-map/           # Leaflet map of all courses (basket pins) for research
 ├── data/course-rankings/ # UDisc 2026 best-course rankings (world/US/route states)
