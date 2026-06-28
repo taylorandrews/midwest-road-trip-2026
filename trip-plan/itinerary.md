@@ -45,30 +45,32 @@ KC (start)  →  fly to Denver  →  Buena Vista (truck prep)
 
 ## Phase 2 — ★ KC → Detroit Disc Golf Leg (Aug 17–25) ★
 
-~1,254 driving miles, ~25 hr behind the wheel, 7 top courses, ending at the
-Worlds basecamp. Routed in `../road-trip-map/` (open `index.html`). Drive
-estimates are course-to-course.
+~1,330 driving miles, ~28 hr behind the wheel (course-to-camp routing), 7 top
+courses, ending at the Worlds basecamp. **Every night Aug 17–30 is now booked.**
+Routed in `../road-trip-map/` (open `index.html`); per-day drives drawn on the
+calendar/map page. Drive estimates run start-of-day → course(s) → that night's
+campground.
 
-| Date | Drive | Course / stop | Rank | Sleep |
-|------|-------|---------------|------|-------|
-| **Mon 8/17** | KC→Columbia, 126 mi / 2.3 hr | **Harmony Bends** (Columbia, MO) | 🌎25 · 🇺🇸12 · MO 2 | On road, near Columbia |
-| **Tue 8/18** | 74 mi / 1.4 hr | **Eagles Crossing** (New Truxton, MO) — *play both: Championship + Wild Times* | 🌎9 · 🇺🇸4 · MO 1 | Near Warrenton / west of STL |
-| **Wed 8/19** | 311 mi / 6.3 hr ⟵ *long day* | **BC3** (Nashville, IN) | 🌎92 · 🇺🇸64 · IN 1 | Brown County area (state park camping) |
-| **Thu 8/20** | 110 mi / 2.5 hr | **Idlewild** (Burlington, KY / Cincinnati) | 🌎22 · 🇺🇸11 | Cincinnati area |
-| **Fri 8/21** | 260 mi / 5.1 hr ⟵ *long day* | Drive up toward **west Michigan** — overnight near Lake Michigan (Valparaiso / Crown Point, IN) | — | 🏕️ Overnight en route |
-| **Sat 8/22** | 88 mi / 1.7 hr | **Arvesta Sport Complex** (South Haven, MI) | 🌎78 · 🇺🇸52 · MI 4 | West MI lakeshore |
-| **Sun 8/23** | 95 mi / 1.9 hr | **Flip City** (Shelby, MI) | 🌎35 · 🇺🇸20 · MI 1 | West MI |
-| **Mon 8/24** | 198 mi / 3.9 hr | **Kensington Toboggan** (Milford Twp, MI) — **5:40 PM tee (confirmed)**, then set up Worlds basecamp | 🌎63 · 🇺🇸40 · MI 2 | 🏕️ **Proud Lake Rec Area, Site 68** — check in after 3 PM |
+| Date | Drive | Course / stop | Rank | Sleep (booked) |
+|------|-------|---------------|------|----------------|
+| **Mon 8/17** | 134 mi / 2.6 hr | **Harmony Bends** (Columbia, MO) | 🌎25 · 🇺🇸12 · MO 2 | 🏕️ Finger Lakes SP (Columbia) · site 17 · #3828322 |
+| **Tue 8/18** | 290 mi / 6.0 hr ⟵ *long* | **Eagles Crossing** (New Truxton, MO) — **12 PM tee**, *play both: Championship + Wild Times* | 🌎9 · 🇺🇸4 · MO 1 | 🏕️ Walnut Point SP (Oakland, IL) · Fox Squirrel #1 · #68096 |
+| **Wed 8/19** | 184 mi / 4.7 hr | **BC3** (Nashville, IN) | 🌎92 · 🇺🇸64 · IN 1 | 🏕️ Versailles SP (IN) · Loop B #120 · #2-39907318 |
+| **Thu 8/20** | 315 mi / 6.5 hr ⟵ *long* | **Idlewild** (Burlington, KY / Cincinnati) | 🌎22 · 🇺🇸11 | 🏕️ Indiana Dunes SP (Chesterton) · #8 · #2-39907952 |
+| **Fri 8/21** | 96 mi / 2.1 hr | **Rogers Lakewood Park** (Valparaiso, IN) | IN #5 | 🏕️ Van Buren SP (South Haven) · #209 · #INMI26-4385520B1 |
+| **Sat 8/22** | 42 mi / 1.0 hr | **Arvesta Sport Complex** (South Haven, MI) | 🌎78 · 🇺🇸52 · MI 4 | 🏕️ Holland SP · #129 · 2 nights · #INMI26-4385155B1 |
+| **Sun 8/23** | 129 mi / 2.7 hr | **Flip City** (Shelby, MI) — day trip from Holland | 🌎35 · 🇺🇸20 · MI 1 | 🏕️ Holland SP · #129 |
+| **Mon 8/24** | 157 mi / 3.3 hr | **Kensington Toboggan** (Milford Twp, MI) — **5:40 PM tee (confirmed)**, then set up Worlds basecamp | 🌎63 · 🇺🇸40 · MI 2 | 🏕️ **Proud Lake Rec Area, Site 68** — check in after 3 PM |
 | **Tue 8/25** | — | Settle in at Proud Lake — Worlds prep (open day) | — | 🏕️ Proud Lake (basecamp) |
 
 **Notes & open items**
 - *Eagles Crossing* = one stop, two rounds (Championship Course #1 in MO, Wild
-  Times #3 in MO).
-- *Dropped the Lake Michigan day* (Rogers Lakewood / Lemon Lake) to keep Mon 8/24
-  free for the Kensington Toboggan round — now just an overnight near Valparaiso /
-  Crown Point on the drive up. The basecamp picks up a 7th night (check in 8/24).
-- Two long driving days (8/19 and 8/21, both 5–6+ hr). Could break either with a
-  bonus course — see the full dataset / `../course-map/` for options en route.
+  Times #3 in MO); paid 12 PM tee on the Championship.
+- The Lake Michigan overnight is now **Indiana Dunes SP** (night of 8/20), and the
+  west-MI nights are **Van Buren** (8/21) → **Holland** (8/22–23, day-trip to Flip
+  City) → **Proud Lake** basecamp from 8/24.
+- Longest days are now **8/18 (290 mi)** and **8/20 (315 mi)** — both course days.
+  8/20 is the big Idlewild → Indiana Dunes haul up to Lake Michigan.
 
 ---
 

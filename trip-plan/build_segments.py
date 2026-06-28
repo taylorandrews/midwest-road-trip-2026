@@ -60,10 +60,11 @@ def main():
             features.append({
                 "type": "Feature",
                 "properties": {
-                    "kind": "course" if w.get("play") else "place",
+                    "kind": "course" if w.get("play") else ("camp" if w.get("camp") else "place"),
                     "name": w["name"],
                     "date": seg["date"],
                     "play": bool(w.get("play")),
+                    "camp": bool(w.get("camp")),
                     "note": w.get("note", ""),
                 },
                 "geometry": {"type": "Point", "coordinates": [w["lon"], w["lat"]]},
