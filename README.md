@@ -11,43 +11,78 @@ Colorado → Kansas → Missouri → Illinois → Indiana → Detroit, MI
 Two threads: **trip logistics** (mapping the route + stops) and a **digital-art
 visual** built from the route and disc golf course data.
 
-## The website
+## The site
 
-`index.html` (repo root) is the site: a **Calendar** tab (landing) showing the
-full trip — a month grid on desktop that reflows to scrolling day-cards on
-mobile — and a **Map** tab with the driving route. Serve from this folder:
+Everything served lives in **`site/`** as one self-contained bundle (so the
+whole folder copies into the portal as a unit). Two surfaces, one data source:
+
+- **`site/index.html`** — the **mobile-first trip guide** (portal entry). A
+  Schedule tab (each day: route, courses, where you sleep with a 📍 Directions
+  link, tee times) and a Map tab (drive lines, course baskets, campsite tents).
+- **`site/plan.html`** — the **laptop planning page**. Read-only established info
+  per day plus a notes box. Notes **autosave to `site/data/planning-notes.json`**
+  so they live in the repo (Claude reads them and folds the durable bits into
+  `schedule.json`). Autosave needs the local server below.
+
+**To plan: double-click `plan.command`** (or run `python3 serve.py`). It starts
+the local server and opens the planning page in your browser. Leave it running
+while you plan; Ctrl+C to stop. The portal hosts `site/` statically — this
+write-back server only runs on the laptop, which is where planning happens.
 
 ```bash
-python3 -m http.server 8000   # then open http://localhost:8000/
+python3 serve.py            # opens http://localhost:8000/plan.html (planning)
+                            #        http://localhost:8000/         (trip guide)
+```
+
+## The workflow
+
+1. **Plan on the laptop** — double-click `plan.command`, type free-form ideas
+   into the scratchpad / per-day boxes. Everything autosaves to
+   `site/data/planning-notes.json`.
+2. **Hand Claude the rest in the terminal** — paste emails/screenshots and say
+   "fold in my planning notes." Claude reads `planning-notes.json` + your
+   materials and promotes the settled stuff into `site/data/schedule.json`.
+3. **See it on your phone** — the guide renders the current trip from that one
+   data source. No copies, never stale.
+
+## Data (source of truth)
+
+```
+site/data/
+├── schedule.json          # the trip: days, route, courses, stays, tee times (Claude maintains)
+├── segments.json          # per-day driving waypoints (courses + booked campgrounds)
+├── route_segments.geojson # generated — drive geometry + markers (build_routes.py)
+├── planning-notes.json    # YOUR typed notes (written by serve.py, read by Claude)
+└── itinerary.md           # human-readable itinerary
+```
+
+Regenerate routes after editing `segments.json` (real driving geometry via OSRM,
+no API key):
+
+```bash
+python3 site/data/build_routes.py
 ```
 
 ## Layout
 
 ```
 sabbatical/
-├── index.html            # The site — Calendar (landing) + Map tabs
-├── road-trip-map/        # Leaflet map of the driving route (embedded in Map tab)
+├── site/                 # The web bundle (served + shipped to the portal)
+│   ├── index.html        # Mobile-first trip guide
+│   ├── plan.html         # Laptop planning page (autosaves notes)
+│   ├── leaflet.css/.js   # bundled map lib (offline-friendly)
+│   └── data/             # source of truth (see above)
+├── serve.py              # dev server: serves site/ + notes write-back
+├── portal.json           # portal manifest → site/index.html
 ├── course-map/           # Leaflet map of all courses (basket pins) for research
-├── trip-plan/            # itinerary.md + schedule.json (drives the calendar)
-├── data/                 # Structured datasets for mapping
-│   └── course-rankings/  # UDisc 2026 best-course rankings (world/US/route states)
-├── assets/               # Working materials for the art visual (exports, palettes, refs)
+├── data/course-rankings/ # UDisc 2026 best-course rankings (world/US/route states)
+├── assets/               # Working materials for the art visual
 └── .claude/              # Project context for Claude (living notes)
 ```
 
-## The pieces
+## How it connects
 
-- **`road-trip-map/`** — `stops.json` → `build_route.py` → `route.geojson`/`.gpx`
-  → `index.html` (dark Leaflet map, real driving geometry via OSRM, no API key).
-  See its README to run it.
-- **`data/course-rankings/`** — 186 unique courses deduped across UDisc's 2026
-  World Top 100, US Top 100, and per-state Top 10s for the 8 route states. Has
-  a build script and a geocoder. See its README for schema + how to extend.
-- **`assets/`** — outputs and references for the visual; kept separate from code.
-
-## How they connect
-
-The course dataset (`data/course-rankings/`) is the candidate set of disc golf
-stops. Geocode it, pick the courses to actually play, and add them to
-`road-trip-map/stops.json` to reroute the map through them. The styled map then
-becomes the basis for exports in `assets/`.
+`data/course-rankings/` (186 courses deduped across UDisc's 2026 World/US/state
+lists) is the candidate set of disc golf stops. Pick the ones to play and add
+them to `site/data/segments.json` (+ a `course` on the day in `schedule.json`),
+then re-run `build_routes.py`. The styled map can still feed exports in `assets/`.
