@@ -3,6 +3,7 @@
   "icon": "🏕️",
   "group": "Travel",
   "outputs": [
-    { "title": "Road Trip Map", "path": "road-trip-map/index.html", "icon": "🗺️" }
+    { "title": "Road Trip Map", "path": "road-trip-map/index.html", "icon": "🗺️" },
+    { "title": "Road Trip Mobile", "path": "mobile/index.html", "icon": "🥏" }
   ]
 }
