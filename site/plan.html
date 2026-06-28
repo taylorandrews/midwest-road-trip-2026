@@ -46,6 +46,7 @@
       min-height: 70px; resize: vertical; outline: none; }
     textarea:focus { border-color: var(--ok); }
     textarea::placeholder { color: #4a5168; }
+    textarea.big { min-height: 130px; }
   </style>
 </head>
 <body>
@@ -56,12 +57,14 @@
   </header>
   <main>
     <div class="intro">
-      Type freely — notes autosave to <code>data/planning-notes.json</code> (via the local
-      dev server). Drop in details and Claude folds the durable stuff into the trip itself.
+      Type free-form ideas anywhere below — everything <b>autosaves</b> as you go
+      (watch the status, top-right). Then in your terminal, paste any emails or
+      screenshots to Claude and say "fold in my planning notes" — Claude reads what
+      you typed here and bakes the settled stuff into the trip.
     </div>
     <div class="general">
-      <h2>General notes / before you go</h2>
-      <textarea data-key="general" placeholder="Anything trip-wide — prep, the post-Worlds drive home, ideas to sort out…"></textarea>
+      <h2>Scratchpad — ideas &amp; to-dos</h2>
+      <textarea data-key="general" class="big" placeholder="Brain-dump anything — campsites to book, courses to add, the drive home, people to see, questions for Claude…"></textarea>
     </div>
     <div id="sections"></div>
   </main>

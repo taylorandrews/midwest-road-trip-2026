@@ -6,9 +6,10 @@ Local dev server for the Sabbatical trip site.
 - Backs the planning page's autosave: POST /api/notes writes the JSON body to
   site/data/planning-notes.json, the file Claude reads to fold notes into the trip.
 
-    python3 serve.py [port]      # default 8000
-      guide:    http://localhost:8000/
-      planning: http://localhost:8000/plan.html
+    python3 serve.py [port] [--no-open]   # default port 8000, opens planning page
+
+      planning: http://localhost:8000/plan.html   (type free-form notes; autosaves)
+      guide:    http://localhost:8000/            (the mobile trip guide)
 
 On the portal the site is static; this little write-back server only runs on the
 laptop, which is where planning happens.
@@ -16,12 +17,16 @@ laptop, which is where planning happens.
 import json
 import os
 import sys
+import threading
+import webbrowser
 from http.server import HTTPServer, SimpleHTTPRequestHandler
 
 HERE = os.path.dirname(os.path.abspath(__file__))
 SITE = os.path.join(HERE, "site")
 NOTES = os.path.join(SITE, "data", "planning-notes.json")
-PORT = int(sys.argv[1]) if len(sys.argv) > 1 else 8000
+args = [a for a in sys.argv[1:] if not a.startswith("-")]
+PORT = int(args[0]) if args else 8000
+OPEN = "--no-open" not in sys.argv
 
 
 class Handler(SimpleHTTPRequestHandler):
@@ -57,8 +62,15 @@ class Handler(SimpleHTTPRequestHandler):
 
 
 if __name__ == "__main__":
-    print(f"Sabbatical trip site → http://localhost:{PORT}")
-    print(f"  guide:    http://localhost:{PORT}/")
-    print(f"  planning: http://localhost:{PORT}/plan.html")
-    print(f"  notes →   {NOTES}")
-    HTTPServer(("", PORT), Handler).serve_forever()
+    plan_url = f"http://localhost:{PORT}/plan.html"
+    print("\n  Sabbatical planning is running.\n")
+    print(f"    ✏️  Plan (type here):  {plan_url}")
+    print(f"    🗺️  Trip guide:        http://localhost:{PORT}/")
+    print(f"    💾 Notes saved to:    {NOTES}")
+    print("\n  Leave this open while you plan. Press Ctrl+C to stop.\n")
+    if OPEN:
+        threading.Timer(0.6, lambda: webbrowser.open(plan_url)).start()
+    try:
+        HTTPServer(("", PORT), Handler).serve_forever()
+    except KeyboardInterrupt:
+        print("\n  Stopped. Notes are saved.\n")

@@ -24,22 +24,24 @@ whole folder copies into the portal as a unit). Two surfaces, one data source:
   so they live in the repo (Claude reads them and folds the durable bits into
   `schedule.json`). Autosave needs the local server below.
 
-Run it locally with the little dev server (serves `site/` + handles the autosave
-write-back):
+**To plan: double-click `plan.command`** (or run `python3 serve.py`). It starts
+the local server and opens the planning page in your browser. Leave it running
+while you plan; Ctrl+C to stop. The portal hosts `site/` statically — this
+write-back server only runs on the laptop, which is where planning happens.
 
 ```bash
-python3 serve.py            # http://localhost:8000/  (guide)
-                            # http://localhost:8000/plan.html  (planning)
+python3 serve.py            # opens http://localhost:8000/plan.html (planning)
+                            #        http://localhost:8000/         (trip guide)
 ```
-
-> The portal hosts `site/` statically; the write-back endpoint only runs locally,
-> which is where planning happens.
 
 ## The workflow
 
-1. **Plan on the laptop** (`plan.html`) — type notes, hand Claude emails/screenshots.
-2. **Claude bakes it in** — reads `planning-notes.json` + your materials and
-   promotes the established stuff into `site/data/schedule.json` (the source of truth).
+1. **Plan on the laptop** — double-click `plan.command`, type free-form ideas
+   into the scratchpad / per-day boxes. Everything autosaves to
+   `site/data/planning-notes.json`.
+2. **Hand Claude the rest in the terminal** — paste emails/screenshots and say
+   "fold in my planning notes." Claude reads `planning-notes.json` + your
+   materials and promotes the settled stuff into `site/data/schedule.json`.
 3. **See it on your phone** — the guide renders the current trip from that one
    data source. No copies, never stale.
 

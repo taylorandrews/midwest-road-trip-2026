@@ -255,7 +255,13 @@ function renderSchedule(schedule, geo) {
     [day.course, day.course2].filter(c => c && c.name && !c.name.startsWith("(")).forEach(c =>
       chips += `<span class="chip course">🥏 ${esc(c.name)}</span>`);
     if (day.flight) chips += `<span class="chip flight">✈️ ${day.flight.from} → ${day.flight.to}</span>`;
-    if (day.stay) chips += `<span class="chip stay">🏕️ ${esc(day.stay.site || (day.stay.status==="idea"?"TBD":day.stay.name))}</span>`;
+    if (day.stay) {
+      const s = day.stay;
+      const label = s.status === "idea"
+        ? "Stay TBD"
+        : [s.name, s.site].filter(Boolean).join(" · ");
+      chips += `<span class="chip stay">🏕️ ${esc(label)}</span>`;
+    }
 
     let detail = courseSection(day) + staySection(day);
     if (day.locked && day.locked.length)
