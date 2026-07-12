@@ -28,16 +28,27 @@ cd site && python3 -m http.server 8000   # then open http://localhost:8000/
 
 ## The planning workflow
 
-Free-form notes live in **`PLANNING.md`** (repo root) — a plain text file. There
-is no app or server for planning; it's just a file.
+Two speeds now (see **`docs/trip-updates.md`** for the full design):
 
-1. **Plan in your editor** — open `PLANNING.md`, type anything (ideas, to-dos,
-   per-day notes). Save. It's version-controlled, so nothing gets lost.
-2. **Hand Claude the rest in the terminal** — paste emails/screenshots and say
-   "fold in my planning notes." Claude reads `PLANNING.md` + your materials and
-   promotes the settled stuff into `site/data/schedule.json`.
-3. **See it on your phone** — the guide renders the current trip from that one
-   data source. No copies, never stale.
+**On the road (seconds):** tap ✏️ in the phone guide and type anything —
+"staying in Denver the 15th". It hits `/api/trip/update` on the portal; Claude
+parses it into a live patch stored in KV and the page updates immediately. No
+build, no PR, no laptop. Unparseable notes appear as 📌 stickies instead of
+being lost.
+
+**At the desk (occasionally):** fold the accumulated live updates back into
+git and ship everything:
+
+```bash
+python3 scripts/pull_updates.py            # KV overlay → schedule.json + PLANNING.md
+./scripts/ship.sh "fold in phone updates"  # commit main + portal sync + push (no PRs)
+```
+
+`PLANNING.md` still works exactly as before for free-form desk planning —
+type, save, tell Claude "fold in my planning notes."
+
+Reservation/ticket PDFs live in **`reservations/`** (gitignored — personal
+info stays on the Mac/iCloud, never pushed).
 
 ## Data (source of truth)
 

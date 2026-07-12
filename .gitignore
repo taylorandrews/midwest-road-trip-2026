@@ -33,6 +33,9 @@ Desktop.ini
 *.swo
 *~
 
+# --- Trip reservations (personal info — never commit) ---
+reservations/
+
 # --- Logs / temp ---
 *.log
 *.tmp
@@ -45,3 +48,7 @@ assets/exports/*
 *.mp4
 *.mov
 *.zip
+
+# --- Trip update sync (local only) ---
+scripts/.sync-config.json
+scripts/applied-updates.log
